@@ -221,42 +221,64 @@ body {
 
 .signal-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between; /* Распределяем элементы по краям */
+    gap: 12px; /* Уменьшил отступ между блоками */
     margin-bottom: 20px;
 }
 
 .pair-info {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 32px;
 }
 
 .pair-flags {
     display: flex;
     align-items: center;
+    position: relative; /* важно для позиционирования дочерних элементов */
+}
+.pair-details {
+    margin-left: 60px; /* ← можно оставить, если нужно смещение внутри левого блока */
+    flex: 1; /* Занимает доступное пространство */
 }
 
 .pair-flag {
     width: 36px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: 50%;
+    margin-left: 20px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8),
+        1px 4px 10px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--panel);
+    overflow: hidden;
+    position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
-    font-size: 14px;
-    color: white;
-    margin-right: 4px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background: transparent; /* Убираем любой фон */
 }
 
+.pair-flag .fi {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-size: cover;
+    background-position: center; /* ← ключевое: центрирует изображение */
+    background-repeat: no-repeat;
+}
+
+/* Левый флаг — чуть левее и выше (больше z-index) */
 .pair-flag:first-child {
     background: linear-gradient(135deg, var(--accent), var(--accent2));
+    left: 0;
+    z-index: 2; /* поверх правого */
 }
 
+/* Правый флаг — чуть правее и ниже */
 .pair-flag:last-child {
     background: linear-gradient(135deg, var(--danger), #ff9900);
+    left: 28px; /* примерно на половину ширины, чтобы перекрывался */
+    z-index: 1;
 }
 
 .pair-details h3 {
@@ -274,6 +296,8 @@ body {
 
 .accuracy-display {
     text-align: right;
+    flex-shrink: 0; /* Не сжимается */
+    min-width: 80px; /* Пример минимальной ширины для выравнивания */
 }
 
 .accuracy-label {
@@ -852,15 +876,6 @@ body {
     flex: 1; /* Каждый селектор занимает равное пространство */
     margin-bottom: 0; /* Убираем нижний отступ, так как он теперь внутри wrapper */
 }
-
-/* Адаптируем под мобильные устройства, если нужно */
-@media (max-width: 480px) {
-    .selectors-wrapper {
-        flex-direction: column; /* На маленьких экранах снова ставим друг под другом */
-        gap: 12px;
-    }
-}
-
 
 .loading-spinner {
     width: 60px;
