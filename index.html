@@ -41,12 +41,37 @@
         </div>
 
         <div class="app-container">
+            <!-- Hamburger Menu Trigger -->
+            <div class="menu-trigger" id="menuTrigger">
+                <i class="fas fa-bars"></i>
+            </div>
+
+            <!-- Side Menu -->
+            <div class="side-menu" id="sideMenu">
+                <div class="side-menu-header">
+                    <span class="brand-name">KV$M</span>
+                    <button class="side-menu-close" id="menuClose">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="side-menu-items">
+                    <button class="side-menu-item" id="menuChooseLanguage">
+                        <!-- Текст будет подставляться динамически -->
+                    </button>
+                    <button class="side-menu-item" id="menuChooseTheme">
+                        <!-- Текст будет подставляться динамически -->
+                    </button>
+                </div>
+            </div>
+
+            <!-- Overlay для затемнения фона -->
+            <div class="menu-overlay" id="menuOverlay"></div>
             <!-- Header -->
             <div class="app-header">
-                <div class="time-display" id="currentTime">22:28</div>
                 <div class="app-title">
                     <span class="brand-name">KV$M INTELLIGENCE</span>
                 </div>
+                <div class="time-display" id="currentTime">22:28</div>
             </div>
 
             <!-- Language Selector -->
