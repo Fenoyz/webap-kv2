@@ -118,6 +118,45 @@ function init() {
     const hours = now.getHours().toString().padStart(2, "0");
     const minutes = now.getMinutes().toString().padStart(2, "0");
     currentTimeEl.textContent = `${hours}:${minutes}`;
+
+    // Menu DOM Elements
+    const menuTrigger = document.getElementById("menuTrigger");
+    const menuClose = document.getElementById("menuClose");
+    const sideMenu = document.getElementById("sideMenu");
+    const menuOverlay = document.getElementById("menuOverlay");
+    const menuChooseLanguage = document.getElementById("menuChooseLanguage");
+    const menuChooseTheme = document.getElementById("menuChooseTheme");
+
+    // Open/close menu
+    function toggleMenu() {
+        sideMenu.classList.toggle("active");
+        menuOverlay.classList.toggle("active");
+    }
+
+    // Обработчики пунктов бокового меню
+    menuChooseLanguage.addEventListener("click", (e) => {
+        toggleMenu();
+        languageTrigger.click(); // имитируем клик по языковому триггеру
+    });
+
+    menuChooseTheme.addEventListener("click", (e) => {
+        toggleMenu();
+        alert("Theme switching will be implemented soon.");
+    });
+
+    menuTrigger.addEventListener("click", toggleMenu);
+    menuClose.addEventListener("click", toggleMenu);
+    menuOverlay.addEventListener("click", toggleMenu);
+
+    // Вызываем при инициализации и при смене языка
+    updateMenuTexts();
+
+    // Пример: в changeLanguage после всех обновлений UI:
+    function changeLanguage(lang) {
+        // ... ваша существующая логика ...
+        updateUIText();
+        updateMenuTexts(); // ← добавить эту строку
+    }
 }
 
 // Update current time
@@ -126,6 +165,14 @@ function updateTime() {
     const hours = now.getHours().toString().padStart(2, "0");
     const minutes = now.getMinutes().toString().padStart(2, "0");
     currentTimeEl.textContent = `${hours}:${minutes}`;
+}
+
+// Update menu item texts on language change
+function updateMenuTexts() {
+    const texts =
+        translations.texts[state.currentLang] || translations.texts.en;
+    menuChooseLanguage.textContent = texts.chooseLanguage;
+    menuChooseTheme.textContent = texts.chooseTheme;
 }
 
 // Setup language selector
@@ -190,6 +237,7 @@ function changeLanguage(lang) {
 
     // Update UI text based on language
     updateUIText();
+    updateMenuTexts();
 }
 
 // Update UI text based on language
@@ -411,7 +459,6 @@ const currencyToFlagMap = {
     // Добавь другие валюты по мере необходимости
 };
 
-// Populate pair dropdown
 function populatePairDropdown() {
     pairDropdown.innerHTML = "";
     const pairs =
@@ -424,29 +471,107 @@ function populatePairDropdown() {
         option.className = "pair-option-dropdown";
         option.dataset.code = pair.code;
 
-        // Extract base currency from pair name (e.g., "EUR/USD" -> "EUR")
-        const pairName = pair.name.replace(" OTC", ""); // Remove OTC suffix if present
-        const baseCurrency = pairName.split("/")[0]?.trim(); // Get the first part before '/'
+        // Извлекаем валюты
+        const pairName = pair.name.replace(" OTC", "");
+        const currencies = pairName.split("/");
+        const baseCurrency = currencies[0]?.trim();
+        const quoteCurrency = currencies[1]?.trim();
+        const baseFlagCode = currencyToFlagMap[baseCurrency] || "xx";
+        const quoteFlagCode = currencyToFlagMap[quoteCurrency] || "xx";
 
-        // Get the corresponding flag code
-        const flagCode = currencyToFlagMap[baseCurrency] || "xx"; // Use 'xx' as fallback for unknown currencies
+        // Контейнер флагов
+        const flagsContainer = document.createElement("div");
+        flagsContainer.className = "pair-flags-select";
+        flagsContainer.style.position = "relative";
+        flagsContainer.style.width = "40px";
+        flagsContainer.style.height = "24px";
 
-        // Create HTML with the flag icon using flag-icons classes
-        // The container now uses flexbox to center the flag properly
-        option.innerHTML = `
-      <div class="pair-flag-select" style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px;">
-          <span class="fi fi-${flagCode}" style="font-size: 24px;"></span>
-      </div>
-      <div style="font-weight: 700; font-size: 14px;">${pair.name}</div>
-    `;
+        // Левый флаг — поверх
+        const baseFlag = document.createElement("div");
+        baseFlag.className = "pair-flag-select";
+        Object.assign(baseFlag.style, {
+            width: "24px",
+            height: "24px",
+            borderRadius: "50%",
+            position: "absolute",
+            left: "0",
+            zIndex: "2",
+            background: "transparent", // ← УБРАН градиент
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden",
+            boxShadow:
+                "0 0 0 1px rgba(255, 255, 255, 0.8), 1px 2px 6px rgba(0,0,0,0.2), 0 0 0 1px var(--panel)",
+        });
+
+        const baseIcon = document.createElement("span");
+        baseIcon.className = `fi fi-${baseFlagCode}`;
+        baseIcon.style.cssText = `
+            width: 100%;
+            height: 100%;
+            display: block;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: transparent;
+        `;
+        baseFlag.appendChild(baseIcon);
+
+        // Правый флаг — под ним
+        const quoteFlag = document.createElement("div");
+        quoteFlag.className = "pair-flag-select";
+        Object.assign(quoteFlag.style, {
+            width: "24px",
+            height: "24px",
+            borderRadius: "50%",
+            position: "absolute",
+            left: "16px",
+            zIndex: "1",
+            background: "transparent", // ← УБРАН градиент
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden",
+            boxShadow:
+                "0 0 0 1px rgba(255, 255, 255, 0.8), 1px 2px 6px rgba(0,0,0,0.2), 0 0 0 1px var(--panel)",
+        });
+
+        const quoteIcon = document.createElement("span");
+        quoteIcon.className = `fi fi-${quoteFlagCode}`;
+        quoteIcon.style.cssText = `
+            width: 100%;
+            height: 100%;
+            display: block;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: transparent;
+        `;
+        quoteFlag.appendChild(quoteIcon);
+
+        flagsContainer.appendChild(baseFlag);
+        flagsContainer.appendChild(quoteFlag);
+
+        // Текст пары
+        const textDiv = document.createElement("div");
+        textDiv.textContent = pair.name;
+        textDiv.style.cssText =
+            "font-weight: 700; font-size: 14px; margin-left: 12px;";
+
+        option.style.display = "flex";
+        option.style.alignItems = "center";
+        option.style.gap = "8px";
+        option.appendChild(flagsContainer);
+        option.appendChild(textDiv);
 
         option.addEventListener("click", (e) => {
-            console.log("Clicked on pair option:", pair.code);
             e.stopPropagation();
             selectPair(pair.code);
             pairDropdown.classList.remove("active");
-            dropdownOverlay.classList.remove("active");
+            dropdownOverlay?.classList.remove("active");
         });
+
         pairDropdown.appendChild(option);
     });
 }
