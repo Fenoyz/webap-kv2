@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,viewport-fit=cover"
+        />
+        <title>KV$M INTELLIGENCE — Trading Signals</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/flag-icons/6.6.6/css/flag-icons.min.css"
+        />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Analyzing Signal...</div>
+                <div class="loading-subtext">
+                    AI is scanning price patterns, volume data, and market
+                    indicators to generate the optimal signal.
+                </div>
+                <div class="loading-progress">
+                    <div
+                        class="loading-progress-bar"
+                        id="loadingProgress"
+                    ></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-container">
+            <!-- Header -->
+            <div class="app-header">
+                <div class="time-display" id="currentTime">22:28</div>
+                <div class="app-title">
+                    <span class="brand-name">KV$M INTELLIGENCE</span>
+                </div>
+            </div>
+
+            <!-- Language Selector -->
+            <div class="language-selector-container">
+                <div class="language-trigger" id="languageTrigger">
+                    <div class="language-flag">
+                        <span class="fi fi-us"></span>
+                    </div>
+                    <span>EN</span>
+                    <i class="fas fa-chevron-down" style="font-size: 12px"></i>
+                </div>
+                <div class="language-dropdown" id="languageDropdown">
+                    <div class="language-option active" data-lang="en">
+                        <span class="fi fi-us"></span>
+                        <span>English</span>
+                    </div>
+                    <div class="language-option" data-lang="ru">
+                        <span class="fi fi-ru"></span>
+                        <span>Русский</span>
+                    </div>
+                    <div class="language-option" data-lang="es">
+                        <span class="fi fi-es"></span>
+                        <span>Español</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trading Type Selector -->
+            <div class="trading-type-selector">
+                <button class="type-btn active" data-type="regular">
+                    REGULAR
+                </button>
+                <button class="type-btn otc" data-type="otc">OTC</button>
+            </div>
+
+            <div class="selectors-wrapper">
+                <!-- Currency Pair Selector -->
+                <div class="selector-container">
+                    <div class="selector-label">Currency Pair</div>
+                    <div class="selector-trigger" id="pairTrigger">
+                        <span id="selectedPairName">EUR/USD</span>
+                        <i
+                            class="fas fa-chevron-down"
+                            style="font-size: 12px"
+                        ></i>
+                    </div>
+                    <div class="selector-dropdown" id="pairDropdown"></div>
+                </div>
+
+                <!-- Timeframe Selector -->
+                <div class="selector-container">
+                    <div class="selector-label">Timeframe</div>
+                    <div class="selector-trigger" id="timeframeTrigger">
+                        <span id="selectedTimeframe">5S</span>
+                        <i
+                            class="fas fa-chevron-down"
+                            style="font-size: 12px"
+                        ></i>
+                    </div>
+                    <div class="selector-dropdown" id="timeframeDropdown"></div>
+                </div>
+            </div>
+
+            <!-- Dropdown Overlay -->
+            <div class="dropdown-overlay" id="dropdownOverlay"></div>
+
+            <!-- Signals Section -->
+            <!-- Signals Section -->
+            <div class="content-section active" id="signalsSection">
+                <div class="signal-card">
+                    <div class="signal-header">
+                        <div class="pair-info">
+                            <div class="pair-flags" id="signalFlags">
+                                <div class="pair-flag">
+                                    <span class="fi fi-eu"></span>
+                                </div>
+                                <div class="pair-flag">
+                                    <span class="fi fi-us"></span>
+                                </div>
+                            </div>
+                            <div class="pair-details">
+                                <h3 id="signalPairName">EUR/USD</h3>
+                                <div class="pair-type" id="signalPairType">
+                                    Regular
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accuracy-display">
+                            <div class="accuracy-label">Accuracy</div>
+                            <div class="accuracy-value" id="accuracyValue">
+                                --%
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Signal Result -->
+                    <div class="signal-result" id="signalResult"></div>
+
+                    <!-- Current Signal -->
+                    <div class="current-signal">
+                        <div class="signal-title">CURRENT SIGNAL</div>
+                        <div class="signal-direction">
+                            <div
+                                class="direction-arrow-large"
+                                id="directionArrow"
+                            >
+                                →
+                            </div>
+                            <div class="direction-text" id="directionText">
+                                Waiting for signal...
+                            </div>
+                        </div>
+
+                        <div class="signal-meta">
+                            <div class="meta-box">
+                                <div class="meta-label">Timeframe</div>
+                                <div class="meta-value" id="metaTimeframe">
+                                    5S
+                                </div>
+                            </div>
+                            <div class="meta-box">
+                                <div class="meta-label">Until</div>
+                                <div class="meta-value" id="metaUntil">
+                                    --:--
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Section -->
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <div class="progress-label">Signal Progress</div>
+                            <div class="progress-label" id="progressPercent">
+                                0%
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="timer-display" id="timerDisplay">
+                            00:00 / 00:00
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="getSignalBtn">
+                            <i class="fas fa-bolt"></i>
+                            GET SIGNAL
+                        </button>
+                        <button class="btn btn-secondary" id="resetSignalBtn">
+                            <i class="fas fa-redo"></i>
+                            RESET SIGNAL
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="content-section" id="profileSection">
+                <div class="profile-section">
+                    <h3
+                        style="
+                            margin-bottom: 20px;
+                            font-size: 20px;
+                            font-weight: 700;
+                        "
+                    >
+                        Profile Statistics
+                    </h3>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div
+                                class="stat-value stat-success"
+                                id="totalSignals"
+                            >
+                                0
+                            </div>
+                            <div class="stat-label">Total Signals</div>
+                        </div>
+                        <div class="stat-card">
+                            <div
+                                class="stat-value stat-success"
+                                id="successfulSignals"
+                            >
+                                0
+                            </div>
+                            <div class="stat-label">Successful</div>
+                        </div>
+                        <div class="stat-card">
+                            <div
+                                class="stat-value stat-danger"
+                                id="failedSignals"
+                            >
+                                0
+                            </div>
+                            <div class="stat-label">Failed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div
+                                class="stat-value stat-warning"
+                                id="successRate"
+                            >
+                                0%
+                            </div>
+                            <div class="stat-label">Success Rate</div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="stat-card"
+                        style="grid-column: span 2; text-align: left"
+                    >
+                        <div class="meta-label" style="margin-bottom: 12px">
+                            Performance Metrics
+                        </div>
+                        <div
+                            style="
+                                display: flex;
+                                flex-direction: column;
+                                gap: 12px;
+                            "
+                        >
+                            <div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                        margin-bottom: 4px;
+                                    "
+                                >
+                                    <span>Best Pair</span>
+                                    <span id="bestPair">--</span>
+                                </div>
+                                <div
+                                    style="
+                                        height: 6px;
+                                        background: rgba(255, 255, 255, 0.05);
+                                        border-radius: 3px;
+                                        overflow: hidden;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                            height: 100%;
+                                            width: 0%;
+                                            background: var(--success);
+                                        "
+                                        id="bestPairBar"
+                                    ></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                        margin-bottom: 4px;
+                                    "
+                                >
+                                    <span>Best Timeframe</span>
+                                    <span id="bestTimeframe">--</span>
+                                </div>
+                                <div
+                                    style="
+                                        height: 6px;
+                                        background: rgba(255, 255, 255, 0.05);
+                                        border-radius: 3px;
+                                        overflow: hidden;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                            height: 100%;
+                                            width: 0%;
+                                            background: var(--accent);
+                                        "
+                                        id="bestTimeframeBar"
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Section -->
+            <div class="content-section" id="historySection">
+                <div class="history-section">
+                    <h3
+                        style="
+                            margin-bottom: 20px;
+                            font-size: 20px;
+                            font-weight: 700;
+                        "
+                    >
+                        Signal History
+                    </h3>
+
+                    <div class="history-list" id="historyList">
+                        <div
+                            class="history-item"
+                            style="
+                                opacity: 0.7;
+                                font-style: italic;
+                                justify-content: center;
+                            "
+                        >
+                            No signals yet
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Tabs -->
+            <div class="footer-tabs">
+                <div class="tab active" data-tab="signals">
+                    <i class="fas fa-chart-line"></i> SIGNALS
+                </div>
+                <div class="tab" data-tab="profile">
+                    <i class="fas fa-user"></i> PROFILE
+                </div>
+                <div class="tab" data-tab="history">
+                    <i class="fas fa-history"></i> HISTORY
+                </div>
+            </div>
+        </div>
+
+        <script src="js/script.js"></script>
+        <script src="js/translations.js"></script>
+    </body>
+</html>
