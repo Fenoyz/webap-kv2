@@ -55,15 +55,20 @@ body {
     position: relative;
 }
 
-/* Header */
 .app-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Центрируем название */
     align-items: center;
     padding: 12px 0;
     margin-bottom: 8px;
     position: relative;
     z-index: 10;
+}
+.app-header .time-display {
+    position: absolute;
+    right: 16px; /* или 0, если хочешь вплотную к краю */
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .app-title {
@@ -897,4 +902,103 @@ body {
     opacity: 0.6;
     pointer-events: none;
     cursor: not-allowed;
+}
+
+/* Hamburger Trigger */
+.menu-trigger {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--panel);
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 20;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.menu-trigger i {
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+/* Side Menu */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background: var(--panel);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 24px 16px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+}
+.side-menu.active {
+    transform: translateX(0);
+}
+
+.side-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+.side-menu-header .brand-name {
+    font-size: 20px;
+}
+.side-menu-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.side-menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+}
+.side-menu-item {
+    width: 100%;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.side-menu-item:hover {
+    background: rgba(45, 140, 255, 0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Overlay */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
+}
+.menu-overlay.active {
+    display: block;
 }
