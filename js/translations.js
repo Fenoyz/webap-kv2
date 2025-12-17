@@ -1,320 +1,1004 @@
-// Translations file
-const translations = {
-    languages: {
-        en: { flag: "us", name: "English", triggerText: "EN" },
-        ru: { flag: "ru", name: "Русский", triggerText: "RU" },
-        es: { flag: "es", name: "Español", triggerText: "ES" },
-    },
+:root {
+    --bg: #050814;
+    --panel: #0b1630;
+    --card: #0d1b36;
+    --muted: #8a94b3;
+    --accent: #2d8cff;
+    --accent2: #6a5bff;
+    --success: #00ff88;
+    --danger: #ff5555;
+    --warning: #ffcc00;
+    --glass: rgba(255, 255, 255, 0.05);
+    --text-primary: #ffffff;
+    --text-secondary: #b8c1e0;
+    --regular-bg: rgba(0, 255, 136, 0.15);
+    --regular-color: #00ff88;
+    --otc-bg: rgba(45, 140, 255, 0.15);
+    --otc-color: #2d8cff;
+    font-family: "Inter", system-ui, -apple-system, Roboto, "Segoe UI", Arial;
+}
 
-    texts: {
-        en: {
-            regular: "REGULAR",
-            otc: "OTC",
-            currencyPair: "Currency Pair",
-            timeframe: "Timeframe",
-            accuracy: "Accuracy",
-            currentSignal: "CURRENT SIGNAL",
-            waiting: "Waiting for signal...",
-            getSignal: "GET SIGNAL",
-            resetSignal: "RESET SIGNAL",
-            signals: "SIGNALS",
-            profile: "PROFILE",
-            history: "HISTORY",
-            profileStats: "Profile Statistics",
-            totalSignals: "Total Signals",
-            successful: "Successful",
-            failed: "Failed",
-            successRate: "Success Rate",
-            performanceMetrics: "Performance Metrics",
-            bestPair: "Best Pair",
-            bestTimeframe: "Best Timeframe",
-            signalHistory: "Signal History",
-            selectPair: "Select Currency Pair",
-            selectTimeframe: "Select Timeframe",
-            buy: "BUY",
-            sell: "SELL",
-            win: "WIN",
-            lose: "LOSE",
-            until: "Until",
-            waitingForSignal: "Waiting..."
-        },
-        ru: {
-            regular: "РЕГУЛЯРНЫЙ",
-            otc: "OTC",
-            currencyPair: "Валютная пара",
-            timeframe: "Таймфрейм",
-            accuracy: "Точность",
-            currentSignal: "ТЕКУЩИЙ СИГНАЛ",
-            waiting: "Ожидание сигнала...",
-            getSignal: "ПОЛУЧИТЬ СИГНАЛ",
-            resetSignal: "СБРОС СИГНАЛ",
-            signals: "СИГНАЛЫ",
-            profile: "ПРОФИЛЬ",
-            history: "ИСТОРИЯ",
-            profileStats: "Статистика профиля",
-            totalSignals: "Всего сигналов",
-            successful: "Успешных",
-            failed: "Неудачных",
-            successRate: "Успешность",
-            performanceMetrics: "Метрики производительности",
-            bestPair: "Лучшая пара",
-            bestTimeframe: "Лучший таймфрейм",
-            signalHistory: "История сигналов",
-            selectPair: "Выберите валютную пару",
-            selectTimeframe: "Выберите таймфрейм",
-            buy: "ПОКУПКА",
-            sell: "ПРОДАЖА",
-            win: "УСПЕХ",
-            lose: "ПРОИГРЫШ",
-            until: "До",
-            waitingForSignal: "Ожидание..."
-        },
-        es: {
-            regular: "REGULAR",
-            otc: "OTC",
-            currencyPair: "Par de divisas",
-            timeframe: "Marco temporal",
-            accuracy: "Precisión",
-            currentSignal: "SEÑAL ACTUAL",
-            waiting: "Esperando señal...",
-            getSignal: "OBTENER SEÑAL",
-            resetSignal: "REINICIAR SEÑAL",
-            signals: "SEÑALES",
-            profile: "PERFIL",
-            history: "HISTORIAL",
-            profileStats: "Estadísticas del perfil",
-            totalSignals: "Señales totales",
-            successful: "Exitosas",
-            failed: "Fallidas",
-            successRate: "Tasa de éxito",
-            performanceMetrics: "Métricas de rendimiento",
-            bestPair: "Mejor par",
-            bestTimeframe: "Mejor marco temporal",
-            signalHistory: "Historial de señales",
-            selectPair: "Seleccionar par de divisas",
-            selectTimeframe: "Seleccionar marco temporal",
-            buy: "COMPRAR",
-            sell: "VENDER",
-            win: "GANAR",
-            lose: "PERDER",
-            until: "Hasta",
-            waitingForSignal: "Esperando..."
-        },
-    },
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-    btnTexts: {
-        en: { buy: "BUY", sell: "SELL" },
-        ru: { buy: "ПОКУПКА", sell: "ПРОДАЖА" },
-        es: { buy: "COMPRAR", sell: "VENDER" },
-    },
+html,
+body {
+    height: 100%;
+    background: radial-gradient(
+            800px 300px at 10% 10%,
+            rgba(45, 140, 255, 0.1),
+            transparent 8%
+        ),
+        radial-gradient(
+            600px 200px at 90% 90%,
+            rgba(106, 91, 255, 0.08),
+            transparent 6%
+        ),
+        var(--bg);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
 
-    resultTexts: {
-        en: { win: "SIGNAL SUCCESSFUL!", loss: "SIGNAL FAILED!" },
-        ru: { win: "СИГНАЛ УСПЕШНЫЙ!", loss: "СИГНАЛ ПРОИГРАЛ!" },
-        es: { win: "¡SEÑAL EXITOSA!", loss: "¡SEÑAL FALLIDA!" },
-    },
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    max-width: 480px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+}
 
-    newSignalBtnTexts: {
-        en: "NEW SIGNAL",
-        ru: "НОВЫЙ СИГНАЛ",
-        es: "NUEVA SEÑAL",
-    },
+.app-header {
+    display: flex;
+    justify-content: center; /* Центрируем название */
+    align-items: center;
+    padding: 12px 0;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 10;
+}
+.app-header .time-display {
+    position: absolute;
+    right: 16px; /* или 0, если хочешь вплотную к краю */
+    top: 50%;
+    transform: translateY(-50%);
+}
 
-    getSignalBtnTexts: {
-        en: "GET SIGNAL",
-        ru: "ПОЛУЧИТЬ СИГНАЛ",
-        es: "OBTENER SEÑAL",
-    },
+.app-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
 
-    // Currency pairs data
-    regularPairs: [
-        {
-            code: "EURUSD",
-            name: "EUR/USD",
-            flag: "EU",
-            countries: ["eu", "us"],
-            flagCodes: ["eu", "us"],
-        },
-        {
-            code: "GBPUSD",
-            name: "GBP/USD",
-            flag: "GB",
-            countries: ["gb", "us"],
-            flagCodes: ["gb", "us"],
-        },
-        {
-            code: "USDJPY",
-            name: "USD/JPY",
-            flag: "JP",
-            countries: ["us", "jp"],
-            flagCodes: ["us", "jp"],
-        },
-        {
-            code: "AUDUSD",
-            name: "AUD/USD",
-            flag: "AU",
-            countries: ["au", "us"],
-            flagCodes: ["au", "us"],
-        },
-        {
-            code: "USDCAD",
-            name: "USD/CAD",
-            flag: "CA",
-            countries: ["us", "ca"],
-            flagCodes: ["us", "ca"],
-        },
-        {
-            code: "EURGBP",
-            name: "EUR/GBP",
-            flag: "EG",
-            countries: ["eu", "gb"],
-            flagCodes: ["eu", "gb"],
-        },
-        {
-            code: "USDCHF",
-            name: "USD/CHF",
-            flag: "CH",
-            countries: ["us", "ch"],
-            flagCodes: ["us", "ch"],
-        },
-        {
-            code: "NZDUSD",
-            name: "NZD/USD",
-            flag: "NZ",
-            countries: ["nz", "us"],
-            flagCodes: ["nz", "us"],
-        },
-        {
-            code: "EURJPY",
-            name: "EUR/JPY",
-            flag: "EJ",
-            countries: ["eu", "jp"],
-            flagCodes: ["eu", "jp"],
-        },
-        {
-            code: "GBPJPY",
-            name: "GBP/JPY",
-            flag: "GJ",
-            countries: ["gb", "jp"],
-            flagCodes: ["gb", "jp"],
-        },
-        {
-            code: "AUDJPY",
-            name: "AUD/JPY",
-            flag: "AJ",
-            countries: ["au", "jp"],
-            flagCodes: ["au", "jp"],
-        },
-        {
-            code: "CADJPY",
-            name: "CAD/JPY",
-            flag: "CJ",
-            countries: ["ca", "jp"],
-            flagCodes: ["ca", "jp"],
-        },
-    ],
+.time-display {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 500;
+    text-align: center;
+}
 
-    otcPairs: [
-        {
-            code: "EURUSD",
-            name: "EUR/USD OTC",
-            flag: "EU",
-            countries: ["eu", "us"],
-            flagCodes: ["eu", "us"],
-        },
-        {
-            code: "GBPUSD",
-            name: "GBP/USD OTC",
-            flag: "GB",
-            countries: ["gb", "us"],
-            flagCodes: ["gb", "us"],
-        },
-        {
-            code: "USDJPY",
-            name: "USD/JPY OTC",
-            flag: "JP",
-            countries: ["us", "jp"],
-            flagCodes: ["us", "jp"],
-        },
-        {
-            code: "AUDUSD",
-            name: "AUD/USD OTC",
-            flag: "AU",
-            countries: ["au", "us"],
-            flagCodes: ["au", "us"],
-        },
-        {
-            code: "USDCAD",
-            name: "USD/CAD OTC",
-            flag: "CA",
-            countries: ["us", "ca"],
-            flagCodes: ["us", "ca"],
-        },
-        {
-            code: "EURGBP",
-            name: "EUR/GBP OTC",
-            flag: "EG",
-            countries: ["eu", "gb"],
-            flagCodes: ["eu", "gb"],
-        },
-        {
-            code: "USDCHF",
-            name: "USD/CHF OTC",
-            flag: "CH",
-            countries: ["us", "ch"],
-            flagCodes: ["us", "ch"],
-        },
-        {
-            code: "NZDUSD",
-            name: "NZD/USD OTC",
-            flag: "NZ",
-            countries: ["nz", "us"],
-            flagCodes: ["nz", "us"],
-        },
-        {
-            code: "EURJPY",
-            name: "EUR/JPY OTC",
-            flag: "EJ",
-            countries: ["eu", "jp"],
-            flagCodes: ["eu", "jp"],
-        },
-        {
-            code: "GBPJPY",
-            name: "GBP/JPY OTC",
-            flag: "GJ",
-            countries: ["gb", "jp"],
-            flagCodes: ["gb", "jp"],
-        },
-        {
-            code: "AUDJPY",
-            name: "AUD/JPY OTC",
-            flag: "AJ",
-            countries: ["au", "jp"],
-            flagCodes: ["au", "jp"],
-        },
-        {
-            code: "CADJPY",
-            name: "CAD/JPY OTC",
-            flag: "CJ",
-            countries: ["ca", "jp"],
-            flagCodes: ["ca", "jp"],
-        },
-    ],
+.brand-name {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    text-shadow: 0 0 15px rgba(45, 140, 255, 0.3);
+}
 
-    // Внутри const translations = { ... }
-    regularTimeframes: [
-        { code: "1M", name: "1M" },
-        { code: "3M", name: "3M" },
-        { code: "30M", name: "30M" },
-        { code: "1H", name: "1H" },
-    ],
-    otcTimeframes: [
-        { code: "5S", name: "5S" },
-        { code: "15S", name: "15S" },
-        { code: "30S", name: "30S" },
-        { code: "1M", name: "1M" },
-        { code: "3M", name: "3M" },
-        { code: "30M", name: "30M" },
-        { code: "1H", name: "1H" },
-    ],
-};
+/* Language Selector */
+.language-selector-container {
+    position: relative;
+    margin-bottom: 16px;
+    z-index: 11;
+    /* Убедись, что нет overflow: hidden */
+}
+
+.language-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--panel);
+    border-radius: 20px;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    width: fit-content;
+    transition: all 0.2s;
+}
+
+.language-trigger:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(45, 140, 255, 0.3);
+}
+
+.language-flag {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.language-dropdown {
+    position: absolute;
+    top: 100%; /* Располагаем сверху триггера */
+    left: 0;
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 100;
+    margin-bottom: 8px; /* Отступ сверху */
+    min-width: 120px;
+}
+
+.language-dropdown.active {
+    display: flex;
+}
+
+.language-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.language-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.language-option.active {
+    background: rgba(45, 140, 255, 0.2);
+    border: 1px solid rgba(45, 140, 255, 0.3);
+}
+
+/* Trading Type Selector */
+.trading-type-selector {
+    display: flex;
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 10;
+    position: relative;
+}
+
+.type-btn {
+    flex: 1;
+    padding: 12px 16px;
+    text-align: center;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    color: var(--muted);
+    border: none;
+}
+
+.type-btn.active {
+    background: var(--regular-bg);
+    color: var(--regular-color);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+}
+
+.type-btn.otc.active {
+    background: var(--otc-bg);
+    color: var(--otc-color);
+    box-shadow: 0 0 10px rgba(45, 140, 255, 0.2);
+}
+
+/* Signal Card */
+.signal-card {
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.02),
+        rgba(255, 255, 255, 0.01)
+    );
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.025);
+    box-shadow: 0 8px 30px rgba(2, 6, 23, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    display: block;
+    z-index: 1;
+    position: relative;
+}
+
+.signal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Распределяем элементы по краям */
+    gap: 12px; /* Уменьшил отступ между блоками */
+    margin-bottom: 20px;
+}
+
+.pair-info {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.pair-flags {
+    display: flex;
+    align-items: center;
+    position: relative; /* важно для позиционирования дочерних элементов */
+}
+.pair-details {
+    margin-left: 60px; /* ← можно оставить, если нужно смещение внутри левого блока */
+    flex: 1; /* Занимает доступное пространство */
+}
+
+.pair-flag {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-left: 20px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8),
+        1px 4px 10px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--panel);
+    overflow: hidden;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent; /* Убираем любой фон */
+}
+
+.pair-flag .fi {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-size: cover;
+    background-position: center; /* ← ключевое: центрирует изображение */
+    background-repeat: no-repeat;
+}
+
+/* Левый флаг — чуть левее и выше (больше z-index) */
+.pair-flag:first-child {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    left: 0;
+    z-index: 2; /* поверх правого */
+}
+
+/* Правый флаг — чуть правее и ниже */
+.pair-flag:last-child {
+    background: linear-gradient(135deg, var(--danger), #ff9900);
+    left: 28px; /* примерно на половину ширины, чтобы перекрывался */
+    z-index: 1;
+}
+
+.pair-details h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.pair-details .pair-type {
+    display: none;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.accuracy-display {
+    text-align: right;
+    flex-shrink: 0; /* Не сжимается */
+    min-width: 80px; /* Пример минимальной ширины для выравнивания */
+}
+
+.accuracy-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.accuracy-value {
+    font-size: 24px;
+    font-weight: 800;
+    background: linear-gradient(to right, var(--success), #7dffc3);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+/* Current Signal */
+.current-signal {
+    background: rgba(255, 255, 255, 0.015);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.signal-title {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.signal-direction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.direction-arrow-large {
+    font-size: 48px;
+    font-weight: 800;
+}
+
+.direction-text {
+    font-size: 22px;
+    font-weight: 800;
+    padding: 8px 24px;
+    border-radius: 50px;
+    letter-spacing: 1px;
+}
+
+.direction-buy {
+    color: var(--success);
+    background: rgba(0, 255, 136, 0.1);
+    border: 2px solid rgba(0, 255, 136, 0.3);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+}
+
+.direction-sell {
+    color: var(--danger);
+    background: rgba(255, 85, 85, 0.1);
+    border: 2px solid rgba(255, 85, 85, 0.3);
+    box-shadow: 0 0 15px rgba(255, 85, 85, 0.2);
+}
+
+/* СТРЕЛКА ЦВЕТА СИГНАЛА */
+.arrow-buy {
+    color: var(--success);
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.arrow-sell {
+    color: var(--danger);
+    text-shadow: 0 0 10px rgba(255, 85, 85, 0.5);
+}
+
+.signal-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.meta-box {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.meta-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.meta-value {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* Signal Result */
+.signal-result {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.signal-result.win {
+    background: rgba(0, 255, 136, 0.15);
+    color: var(--success);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    display: flex;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+}
+
+.signal-result.loss {
+    background: rgba(255, 85, 85, 0.15);
+    color: var(--danger);
+    border: 1px solid rgba(255, 85, 85, 0.3);
+    display: flex;
+    box-shadow: 0 0 15px rgba(255, 85, 85, 0.2);
+}
+
+/* Progress Section */
+.progress-section {
+    margin-bottom: 20px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.progress-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right, var(--success), #7dffc3);
+    border-radius: 4px;
+    transition: width 1s linear;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.timer-display {
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.btn {
+    padding: 20px;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    letter-spacing: 1px;
+}
+
+.btn-primary {
+    background: linear-gradient(to right, var(--accent), var(--accent2));
+    color: white;
+    box-shadow: 0 6px 20px rgba(45, 140, 255, 0.3);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 8px 25px rgba(45, 140, 255, 0.4);
+    background: linear-gradient(to right, #3d9cff, #7a6bff);
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(5, 8, 20, 0.95);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.loading-overlay.active {
+    display: flex;
+}
+
+.loading-content {
+    background: var(--panel);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 320px;
+    width: 90%;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.loading-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, var(--accent), var(--accent2));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.7;
+    }
+}
+
+.loading-text {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--accent);
+}
+
+.loading-subtext {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.loading-progress {
+    margin-top: 30px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.loading-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right, var(--accent), var(--accent2));
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* Footer Tabs */
+.footer-tabs {
+    display: flex;
+    background: var(--panel);
+    border-radius: 16px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: auto;
+    z-index: 10;
+    position: relative;
+}
+
+.tab {
+    flex: 1;
+    padding: 14px;
+    text-align: center;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.tab.active {
+    background: rgba(45, 140, 255, 0.2);
+    color: var(--accent);
+    box-shadow: 0 0 10px rgba(45, 140, 255, 0.2);
+}
+
+/* Content Sections */
+.content-section {
+    display: none;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.content-section.active {
+    display: block;
+}
+
+/* Profile Section */
+.profile-section {
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.02),
+        rgba(255, 255, 255, 0.01)
+    );
+    border-radius: 18px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.025);
+    box-shadow: 0 8px 30px rgba(2, 6, 23, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: var(--panel);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.stat-success {
+    color: var(--success);
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
+}
+
+.stat-danger {
+    color: var(--danger);
+    text-shadow: 0 0 5px rgba(255, 85, 85, 0.3);
+}
+
+.stat-warning {
+    color: var(--warning);
+}
+
+/* History Section */
+.history-section {
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.02),
+        rgba(255, 255, 255, 0.01)
+    );
+    border-radius: 18px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.025);
+    box-shadow: 0 8px 30px rgba(2, 6, 23, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.history-item {
+    background: var(--panel);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.history-pair {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.history-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.history-pair-name {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.history-time {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.history-result {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    font-size: 16px;
+}
+
+.history-win {
+    color: var(--success);
+}
+
+.history-loss {
+    color: var(--danger);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .app-container {
+        padding: 12px;
+    }
+
+    .signal-card,
+    .profile-section,
+    .history-section {
+        padding: 16px;
+    }
+
+    .btn {
+        padding: 18px;
+        font-size: 16px;
+    }
+
+    .selectors-container {
+        flex-direction: column;
+    }
+}
+
+/* Selector Containers */
+.selector-container {
+    position: relative;
+    margin-bottom: 16px;
+    z-index: 8;
+}
+.selector-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+.selector-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.selector-trigger:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(45, 140, 255, 0.3);
+}
+.selector-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 90;
+    margin-top: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.selector-dropdown.active {
+    display: flex;
+}
+.pair-option-dropdown,
+.timeframe-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-weight: 600;
+}
+.pair-option-dropdown:hover,
+.timeframe-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+.pair-option-dropdown.active,
+.timeframe-option.active {
+    background: rgba(45, 140, 255, 0.2);
+    border: 1px solid rgba(45, 140, 255, 0.3);
+}
+
+/* Контейнер для двух селекторов */
+.selectors-wrapper {
+    display: flex;
+    gap: 16px; /* Расстояние между селекторами */
+    margin-bottom: 20px; /* Отступ снизу, если нужно */
+}
+
+/* Растягиваем селекторы по ширине */
+.selector-container {
+    flex: 1; /* Каждый селектор занимает равное пространство */
+    margin-bottom: 0; /* Убираем нижний отступ, так как он теперь внутри wrapper */
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(45, 140, 255, 0.2);
+    border-top-color: #2d8cff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.btn-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+/* Hamburger Trigger */
+.menu-trigger {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--panel);
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 20;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.menu-trigger i {
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+/* Side Menu */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background: var(--panel);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 24px 16px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+}
+.side-menu.active {
+    transform: translateX(0);
+}
+
+.side-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+.side-menu-header .brand-name {
+    font-size: 20px;
+}
+.side-menu-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.side-menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+}
+.side-menu-item {
+    width: 100%;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.side-menu-item:hover {
+    background: rgba(45, 140, 255, 0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Overlay */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
+}
+.menu-overlay.active {
+    display: block;
+}
