@@ -545,7 +545,9 @@ function updateSignalFlags(pair) {
 // Setup tabs
 function setupTabs() {
     // Элементы, которые нужно скрывать вне Signals
-    const tradingTypeSelector = document.querySelector(".trading-type-selector");
+    const tradingTypeSelector = document.querySelector(
+        ".trading-type-selector",
+    );
     const selectorsWrapper = document.querySelector(".selectors-wrapper");
 
     tabs.forEach((tab) => {
@@ -617,7 +619,9 @@ function updateProgress() {
 
     progressFill.style.width = `${percent}%`;
     progressPercent.textContent = `${(state.currentPercent || 0).toFixed(2)}%`;
-    timerDisplay.textContent = `${formatTime(elapsed)} / ${formatTime(state.timerDuration)}`;
+    timerDisplay.textContent = `${formatTime(elapsed)} / ${formatTime(
+        state.timerDuration,
+    )}`;
 
     // Обновляем "Until"
     const untilTime = new Date(Date.now() + remaining * 1000);
@@ -762,12 +766,82 @@ function startTimer(duration) {
 
 // Complete signal and determine result
 function completeSignal() {
-    // ... (вся существующая логика)
+    if (!state.currentSignal) return;
 
-    // В конце — разблокировать кнопку
-    getSignalBtn.classList.remove("btn-disabled"); // ← Добавлено
+    // Определяем результат случайным образом (или по вашей логике)
+    const isWin = Math.random() > 0.5; // ← Замените на реальную логику, если она есть
+    const result = isWin ? "win" : "loss";
+    const resultSimple = isWin
+        ? translations.btnTexts[state.currentLang]?.win || "Win"
+        : translations.btnTexts[state.currentLang]?.loss || "Loss";
 
-    // Обновление текста кнопки
+    // Обновляем статистику
+    state.stats.totalSignals += 1;
+    if (isWin) {
+        state.stats.successfulSignals += 1;
+    } else {
+        state.stats.failedSignals += 1;
+    }
+
+    // Обновляем статистику по паре
+    if (!state.stats.pairPerformance[state.selectedPair]) {
+        state.stats.pairPerformance[state.selectedPair] = {
+            total: 0,
+            successful: 0,
+        };
+    }
+    state.stats.pairPerformance[state.selectedPair].total += 1;
+    if (isWin) {
+        state.stats.pairPerformance[state.selectedPair].successful += 1;
+    }
+
+    // Обновляем статистику по таймфрейму
+    if (!state.stats.timeframePerformance[state.selectedTimeframe]) {
+        state.stats.timeframePerformance[state.selectedTimeframe] = {
+            total: 0,
+            successful: 0,
+        };
+    }
+    state.stats.timeframePerformance[state.selectedTimeframe].total += 1;
+    if (isWin) {
+        state.stats.timeframePerformance[
+            state.selectedTimeframe
+        ].successful += 1;
+    }
+
+    // Добавляем сигнал в историю
+    state.signalHistory.unshift({
+        pair: state.selectedPair,
+        pairName: state.currentSignal.pairName,
+        timeframe: state.selectedTimeframe,
+        direction: state.currentSignal.direction,
+        accuracy: state.currentSignal.accuracy,
+        startTime: state.currentSignal.startTime,
+        duration: state.currentSignal.duration,
+        result: result,
+        resultSimple: resultSimple,
+    });
+
+    // Ограничиваем историю 100 записями (опционально)
+    if (state.signalHistory.length > 100) {
+        state.signalHistory.pop();
+    }
+
+    // Обновляем отображение результата
+    signalResult.textContent = resultSimple;
+    signalResult.className = "signal-result " + (isWin ? "win" : "loss");
+    signalResult.style.display = "block";
+
+    // Сбрасываем текущий сигнал
+    state.currentSignal = null;
+
+    // Обновляем интерфейс
+    updateProfileStats();
+    updateHistoryDisplay();
+
+    // Разблокировать кнопку
+    getSignalBtn.classList.remove("btn-disabled");
+
     const getSignalBtnTexts =
         translations.getSignalBtnTexts[state.currentLang] ||
         translations.getSignalBtnTexts.en;
