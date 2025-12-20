@@ -172,8 +172,8 @@ function updateHistoryDisplay() {
             minute: "2-digit",
         });
         const dateStr = signal.startTime.toLocaleDateString([], {
-            month: "short",
-            day: "numeric",
+            month: "2-digit", // <-- Числовой формат месяца
+            day: "2-digit", // <-- Также убедимся, что день в 2-значном формате
         });
 
         const pairName = signal.pairName.replace(" OTC", "");
@@ -903,9 +903,11 @@ function showLoading() {
     loadingProgress.style.width = "0%"; // <-- Лоадер тоже начинает с 0%
 
     // Получаем тексты для текущего языка
-    const texts = translations.texts[state.currentLang] || translations.texts.en;
+    const texts =
+        translations.texts[state.currentLang] || translations.texts.en;
     document.querySelector(".loading-text").textContent = texts.loadingTitle;
-    document.querySelector(".loading-subtext").textContent = texts.loadingSubtitle;
+    document.querySelector(".loading-subtext").textContent =
+        texts.loadingSubtitle;
 
     let progress = 0;
     const interval = setInterval(() => {
@@ -1184,13 +1186,16 @@ function generateSignal() {
 
     // --- НОВЫЙ КОД: СБРОС ВИЗУАЛЬНОГО ПРОГРЕССА СРАЗУ ---
     // Сбрасываем визуальный прогресс на 0% перед показом лоадера
-    if (progressFill) { // Проверяем, существует ли элемент
+    if (progressFill) {
+        // Проверяем, существует ли элемент
         progressFill.style.width = "0%"; // <-- Сброс ширины прогресс-бара
     }
-    if (progressPercent) { // Проверяем, существует ли элемент
+    if (progressPercent) {
+        // Проверяем, существует ли элемент
         progressPercent.textContent = "0.00%"; // <-- Сброс текста процента
     }
-    if (timerDisplay) { // Проверяем, существует ли элемент
+    if (timerDisplay) {
+        // Проверяем, существует ли элемент
         timerDisplay.textContent = "00:00 / 00:00"; // <-- Сброс таймера (необязательно, но для полноты)
     }
     // --- КОНЕЦ НОВОГО КОДА ---
@@ -1215,7 +1220,8 @@ function resetSignal() {
     timerDisplay.textContent = "00:00 / 00:00";
 
     // Сбрасываем направление и стрелку
-    const langTexts = translations.texts[state.currentLang] || translations.texts.en;
+    const langTexts =
+        translations.texts[state.currentLang] || translations.texts.en;
     directionText.textContent = langTexts.waiting || "Waiting...";
     directionText.className = "direction-text";
     directionArrow.textContent = "?";
@@ -1233,7 +1239,9 @@ function resetSignal() {
     updateSignalFlags(pair);
 
     // Обновляем текст кнопки Get Signal
-    const getSignalBtnTexts = translations.getSignalBtnTexts[state.currentLang] || translations.getSignalBtnTexts.en;
+    const getSignalBtnTexts =
+        translations.getSignalBtnTexts[state.currentLang] ||
+        translations.getSignalBtnTexts.en;
     getSignalBtn.innerHTML = `<i class="fas fa-bolt"></i> ${getSignalBtnTexts}`;
     getSignalBtn.classList.remove("btn-disabled");
 }
