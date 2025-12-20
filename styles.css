@@ -16,6 +16,31 @@
     --otc-bg: rgba(45, 140, 255, 0.15);
     --otc-color: #2d8cff;
     font-family: "Inter", system-ui, -apple-system, Roboto, "Segoe UI", Arial;
+
+    /* Вставь это ВНУТРЬ :root { ... } сразу после определений тёмной темы */
+/* Например, после строки --otc-color: #2d8cff; */
+
+    /* Переменные для светлой темы */
+    --bg-light: #f0f4ff;
+    --panel-light: #ffffff;
+    --card-light: #e6ebf2; /* Светлая тема - чуть темнее фона */
+    --muted-light: #666666;
+    --accent-light: #2d8cff;
+    --accent2-light: #6a5bff;
+    --success-light: #00aa55;
+    --danger-light: #cc3333;
+    --warning-light: #ff9900;
+    --glass-light: rgba(255, 255, 255, 0.8);
+    --text-primary-light: #1a1a1a;
+    --text-secondary-light: #4d4d4d;
+    --regular-bg-light: rgba(0, 170, 85, 0.15);
+    --regular-color-light: #00aa55;
+    --otc-bg-light: rgba(45, 140, 255, 0.15);
+    --otc-color-light: #2d8cff;
+    --shadow-dark: 0 8px 30px rgba(2, 6, 23, 0.7); /* Тёмная тень */
+    --shadow-light: 0 8px 30px rgba(0, 0, 0, 0.1); /* Светлая тень */
+    --shadow-inset-dark: inset 0 1px 0 rgba(255, 255, 255, 0.02); /* Внутренняя светлая тень для тёмной темы */
+    --shadow-inset-light: inset 0 1px 0 rgba(0, 0, 0, 0.02); /* Внутренняя тёмная тень для светлой темы */
 }
 
 * {
@@ -180,6 +205,7 @@ body {
     position: relative;
 }
 
+/* Trading Type Selector Button */
 .type-btn {
     flex: 1;
     padding: 12px 16px;
@@ -189,9 +215,11 @@ body {
     font-size: 15px;
     cursor: pointer;
     transition: all 0.2s;
-    background: transparent;
+    /* --- ОБНОВЛЕНО --- */
+    background: transparent; /* Прозрачный фон по умолчанию */
     color: var(--muted);
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Тонкая граница */
+    /* --- /ОБНОВЛЕНО --- */
 }
 
 .type-btn.active {
@@ -208,17 +236,14 @@ body {
 
 /* Signal Card */
 .signal-card {
-    background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.02),
-        rgba(255, 255, 255, 0.01)
-    );
+    background: var(--bg);
     border-radius: 18px;
     padding: 20px;
     margin-bottom: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.025);
-    box-shadow: 0 8px 30px rgba(2, 6, 23, 0.7),
-        inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card);
+    /* --- ОБНОВЛЕНО --- */
+    box-shadow: var(--shadow-dark), var(--shadow-inset-dark);
+    /* --- /ОБНОВЛЕНО --- */
     display: block;
     z-index: 1;
     position: relative;
@@ -511,10 +536,36 @@ body {
     box-shadow: 0 6px 20px rgba(45, 140, 255, 0.3);
 }
 
+/* Добавь или замени существующий стиль для .btn-secondary */
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-secondary);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Используем градиент как у основной кнопки, но более тусклый */
+    background: linear-gradient(to right, rgba(45, 140, 255, 0.2), rgba(106, 91, 255, 0.2));
+    color: var(--text-primary); /* Цвет текста как у остального интерфейса */
+    border: 1px solid rgba(45, 140, 255, 0.3); /* Легкая граница */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Тень для объёмности */
+}
+
+.btn-secondary:hover {
+    /* При наведении немного усиливаем градиент */
+    background: linear-gradient(to right, rgba(45, 140, 255, 0.3), rgba(106, 91, 255, 0.3));
+    box-shadow: 0 6px 15px rgba(45, 140, 255, 0.2); /* Более заметная тень при наведении */
+}
+
+/* Добавь фон для основного контейнера приложения */
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    max-width: 480px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    /* --- НОВОЕ --- */
+    background: var(--bg); /* Используем основной цвет фона из темы */
+    border-radius: 16px; /* Слегка скругляем углы контейнера */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Добавляем тень для отделения от фона страницы */
+    /* --- /НОВОЕ --- */
 }
 
 .btn:hover {
@@ -655,16 +706,13 @@ body {
 
 /* Profile Section */
 .profile-section {
-    background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.02),
-        rgba(255, 255, 255, 0.01)
-    );
+    background: var(--bg);
     border-radius: 18px;
     padding: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.025);
-    box-shadow: 0 8px 30px rgba(2, 6, 23, 0.7),
-        inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card);
+    /* --- ОБНОВЛЕНО --- */
+    box-shadow: var(--shadow-dark), var(--shadow-inset-dark);
+    /* --- /ОБНОВЛЕНО --- */
 }
 
 .stats-grid {
@@ -709,16 +757,13 @@ body {
 
 /* History Section */
 .history-section {
-    background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.02),
-        rgba(255, 255, 255, 0.01)
-    );
+    background: var(--bg);
     border-radius: 18px;
     padding: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.025);
-    box-shadow: 0 8px 30px rgba(2, 6, 23, 0.7),
-        inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card);
+    /* --- ОБНОВЛЕНО --- */
+    box-shadow: var(--shadow-dark), var(--shadow-inset-dark);
+    /* --- /ОБНОВЛЕНО --- */
 }
 
 .history-list {
@@ -1001,4 +1046,108 @@ body {
 }
 .menu-overlay.active {
     display: block;
+}
+
+/* Language Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.language-modal {
+    background: var(--card);
+    border-radius: 18px;
+    width: 90%;
+    max-width: 320px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.modal-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.modal-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.modal-lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    background: var(--panel);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.modal-lang-btn:hover {
+    background: rgba(45, 140, 255, 0.2);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Стиль для флага в истории */
+.pair-flag-history {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1); /* Тень для светлой темы */
+    flex-shrink: 0; /* Не сжимается */
 }
