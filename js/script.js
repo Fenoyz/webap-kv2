@@ -881,31 +881,116 @@ function formatTime(seconds) {
     }
 }
 
+// Show loading overlay and reset progress immediately
 function showLoading() {
+    // Убираем плавный сброс прогресса отсюда, так как он уже выполнен в generateSignal
+    // state.currentPercent = 0; // <-- Это можно оставить, чтобы сбросить и состояние
+    // if (state.timer) { ... } // <-- Этот блок оставляем, чтобы остановить старый таймер
+
+    // Сбрасываем состояние таймера и активности (важно!)
+    if (state.timer) {
+        clearInterval(state.timer);
+        state.timer = null;
+    }
+    state.isSignalActive = false;
+    state.currentPercent = 0; // <-- Сброс процента в состоянии
+
+    // Блокируем кнопку
     getSignalBtn.classList.add("btn-disabled");
+
+    // Показываем оверлей
     loadingOverlay.classList.add("active");
-    loadingProgress.style.width = "0%";
+    loadingProgress.style.width = "0%"; // <-- Лоадер тоже начинает с 0%
 
     // Получаем тексты для текущего языка
     const texts = translations.texts[state.currentLang] || translations.texts.en;
-
-    // Обновляем текст в интерфейсе
     document.querySelector(".loading-text").textContent = texts.loadingTitle;
     document.querySelector(".loading-subtext").textContent = texts.loadingSubtitle;
 
     let progress = 0;
     const interval = setInterval(() => {
-        progress += Math.random() * 15;
+        progress += Math.random() * 15; // Имитация загрузки
         if (progress >= 100) {
             progress = 100;
             clearInterval(interval);
             setTimeout(() => {
                 loadingOverlay.classList.remove("active");
                 generateSignalAfterLoading();
-            }, 500);
+            }, 500); // Небольшая задержка перед завершением лоадера
         }
         loadingProgress.style.width = `${progress}%`;
     }, 200);
+}
+
+// Generate signal after loading finishes
+function generateSignalAfterLoading() {
+    // Убедимся, что предыдущий таймер полностью сброшен
+    if (state.timer) {
+        clearInterval(state.timer);
+        state.timer = null;
+    }
+    state.isSignalActive = false;
+
+    // Clear previous result
+    signalResult.className = "signal-result";
+    signalResult.style.display = "none";
+
+    // --- Остальная логика генерации сигнала без изменений ---
+    const pair = getCurrentPairObject();
+    const timeframes =
+        state.tradingType === "otc"
+            ? translations.otcTimeframes
+            : translations.regularTimeframes;
+    const timeframe =
+        timeframes.find((t) => t.code === state.selectedTimeframe) ||
+        timeframes[0];
+
+    const accuracy = 65 + Math.floor(Math.random() * 31);
+    accuracyValue.textContent = `${accuracy}%`;
+
+    const isBuy = Math.random() > 0.5;
+    const btnTexts =
+        translations.btnTexts[state.currentLang] || translations.btnTexts.en;
+
+    directionArrow.textContent = isBuy ? "↗" : "↘";
+    directionArrow.className =
+        "direction-arrow-large " + (isBuy ? "arrow-buy" : "arrow-sell");
+    directionText.textContent = isBuy ? btnTexts.buy : btnTexts.sell;
+    directionText.className =
+        "direction-text " + (isBuy ? "direction-buy" : "direction-sell");
+
+    const timeframeSeconds = {
+        "1S": 1,
+        "5S": 5,
+        "15S": 15,
+        "30S": 30,
+        "1M": 60,
+        "3M": 180,
+        "5M": 300,
+        "15M": 900,
+        "30M": 1800,
+        "1H": 3600,
+        "3H": 10800,
+        "4H": 14400,
+    };
+    const duration = timeframeSeconds[state.selectedTimeframe] || 5;
+
+    state.currentSignal = {
+        pair: state.selectedPair,
+        pairName: pair.name,
+        timeframe: state.selectedTimeframe,
+        direction: isBuy ? "buy" : "sell",
+        accuracy: accuracy,
+        startTime: new Date(),
+        duration: duration,
+    };
+
+    // Start timer and update UI
+    startTimer(state.currentSignal.duration);
+    const newSignalBtnTexts =
+        translations.newSignalBtnTexts[state.currentLang] ||
+        translations.newSignalBtnTexts.en;
+    getSignalBtn.innerHTML = `<i class="fas fa-sync-alt"></i> ${newSignalBtnTexts}`;
 }
 
 // Generate signal after loading
@@ -1093,7 +1178,24 @@ function generateSignal() {
         if (!confirm("A signal is already active. Generate a new one?")) {
             return;
         }
+        // Если пользователь согласился, сначала сбросим текущий сигнал
+        resetSignal();
     }
+
+    // --- НОВЫЙ КОД: СБРОС ВИЗУАЛЬНОГО ПРОГРЕССА СРАЗУ ---
+    // Сбрасываем визуальный прогресс на 0% перед показом лоадера
+    if (progressFill) { // Проверяем, существует ли элемент
+        progressFill.style.width = "0%"; // <-- Сброс ширины прогресс-бара
+    }
+    if (progressPercent) { // Проверяем, существует ли элемент
+        progressPercent.textContent = "0.00%"; // <-- Сброс текста процента
+    }
+    if (timerDisplay) { // Проверяем, существует ли элемент
+        timerDisplay.textContent = "00:00 / 00:00"; // <-- Сброс таймера (необязательно, но для полноты)
+    }
+    // --- КОНЕЦ НОВОГО КОДА ---
+
+    // Теперь начнём процесс нового сигнала (лоадер появится уже с 0%)
     showLoading();
 }
 
@@ -1104,17 +1206,16 @@ function resetSignal() {
     }
     state.isSignalActive = false;
     state.currentSignal = null;
-    state.currentPercent = 0;
+    state.currentPercent = 0; // <-- Сброс процента в состоянии
 
     // --- Сброс визуальных элементов сигнала ---
-    // Сбрасываем прогресс
+    // Сбрасываем прогресс (включая счётчик)
     progressFill.style.width = "0%";
     progressPercent.textContent = "0.00%";
     timerDisplay.textContent = "00:00 / 00:00";
 
     // Сбрасываем направление и стрелку
-    const langTexts =
-        translations.texts[state.currentLang] || translations.texts.en;
+    const langTexts = translations.texts[state.currentLang] || translations.texts.en;
     directionText.textContent = langTexts.waiting || "Waiting...";
     directionText.className = "direction-text";
     directionArrow.textContent = "?";
@@ -1132,9 +1233,7 @@ function resetSignal() {
     updateSignalFlags(pair);
 
     // Обновляем текст кнопки Get Signal
-    const getSignalBtnTexts =
-        translations.getSignalBtnTexts[state.currentLang] ||
-        translations.getSignalBtnTexts.en;
+    const getSignalBtnTexts = translations.getSignalBtnTexts[state.currentLang] || translations.getSignalBtnTexts.en;
     getSignalBtn.innerHTML = `<i class="fas fa-bolt"></i> ${getSignalBtnTexts}`;
     getSignalBtn.classList.remove("btn-disabled");
 }
