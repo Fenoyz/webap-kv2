@@ -17,13 +17,10 @@
     --otc-color: #2d8cff;
     font-family: "Inter", system-ui, -apple-system, Roboto, "Segoe UI", Arial;
 
-    /* Вставь это ВНУТРЬ :root { ... } сразу после определений тёмной темы */
-/* Например, после строки --otc-color: #2d8cff; */
-
     /* Переменные для светлой темы */
     --bg-light: #f0f4ff;
     --panel-light: #ffffff;
-    --card-light: #e6ebf2; /* Светлая тема - чуть темнее фона */
+    --card-light: #e6ebf2;
     --muted-light: #666666;
     --accent-light: #2d8cff;
     --accent2-light: #6a5bff;
@@ -37,10 +34,10 @@
     --regular-color-light: #00aa55;
     --otc-bg-light: rgba(45, 140, 255, 0.15);
     --otc-color-light: #2d8cff;
-    --shadow-dark: 0 8px 30px rgba(2, 6, 23, 0.7); /* Тёмная тень */
-    --shadow-light: 0 8px 30px rgba(0, 0, 0, 0.1); /* Светлая тень */
-    --shadow-inset-dark: inset 0 1px 0 rgba(255, 255, 255, 0.02); /* Внутренняя светлая тень для тёмной темы */
-    --shadow-inset-light: inset 0 1px 0 rgba(0, 0, 0, 0.02); /* Внутренняя тёмная тень для светлой темы */
+    --shadow-dark: 0 8px 30px rgba(2, 6, 23, 0.7);
+    --shadow-light: 0 8px 30px rgba(0, 0, 0, 0.1);
+    --shadow-inset-dark: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    --shadow-inset-light: inset 0 1px 0 rgba(0, 0, 0, 0.02);
 }
 
 * {
@@ -78,20 +75,24 @@ body {
     margin: 0 auto;
     width: 100%;
     position: relative;
+    background: var(--bg);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .app-header {
     display: flex;
-    justify-content: center; /* Центрируем название */
+    justify-content: center;
     align-items: center;
     padding: 12px 0;
     margin-bottom: 8px;
     position: relative;
     z-index: 10;
 }
+
 .app-header .time-display {
     position: absolute;
-    right: 16px; /* или 0, если хочешь вплотную к краю */
+    right: 16px;
     top: 50%;
     transform: translateY(-50%);
 }
@@ -99,9 +100,8 @@ body {
 .app-title {
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
-    top: 50%;
     transform: translate(-50%, -50%);
+    top: 50%;
 }
 
 .time-display {
@@ -125,7 +125,6 @@ body {
     position: relative;
     margin-bottom: 16px;
     z-index: 11;
-    /* Убедись, что нет overflow: hidden */
 }
 
 .language-trigger {
@@ -155,7 +154,7 @@ body {
 
 .language-dropdown {
     position: absolute;
-    top: 100%; /* Располагаем сверху триггера */
+    top: 100%;
     left: 0;
     background: var(--panel);
     border-radius: 12px;
@@ -166,7 +165,7 @@ body {
     flex-direction: column;
     gap: 6px;
     z-index: 100;
-    margin-bottom: 8px; /* Отступ сверху */
+    margin-bottom: 8px;
     min-width: 120px;
 }
 
@@ -205,7 +204,6 @@ body {
     position: relative;
 }
 
-/* Trading Type Selector Button */
 .type-btn {
     flex: 1;
     padding: 12px 16px;
@@ -215,11 +213,9 @@ body {
     font-size: 15px;
     cursor: pointer;
     transition: all 0.2s;
-    /* --- ОБНОВЛЕНО --- */
-    background: transparent; /* Прозрачный фон по умолчанию */
+    background: transparent;
     color: var(--muted);
-    border: 1px solid rgba(255, 255, 255, 0.05); /* Тонкая граница */
-    /* --- /ОБНОВЛЕНО --- */
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .type-btn.active {
@@ -241,9 +237,7 @@ body {
     padding: 20px;
     margin-bottom: 16px;
     border: 1px solid var(--card);
-    /* --- ОБНОВЛЕНО --- */
     box-shadow: var(--shadow-dark), var(--shadow-inset-dark);
-    /* --- /ОБНОВЛЕНО --- */
     display: block;
     z-index: 1;
     position: relative;
@@ -252,8 +246,8 @@ body {
 .signal-header {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Распределяем элементы по краям */
-    gap: 12px; /* Уменьшил отступ между блоками */
+    justify-content: space-between;
+    gap: 12px;
     margin-bottom: 20px;
 }
 
@@ -266,11 +260,7 @@ body {
 .pair-flags {
     display: flex;
     align-items: center;
-    position: relative; /* важно для позиционирования дочерних элементов */
-}
-.pair-details {
-    margin-left: 60px; /* ← можно оставить, если нужно смещение внутри левого блока */
-    flex: 1; /* Занимает доступное пространство */
+    position: relative;
 }
 
 .pair-flag {
@@ -285,7 +275,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent; /* Убираем любой фон */
+    background: transparent;
 }
 
 .pair-flag .fi {
@@ -293,22 +283,25 @@ body {
     height: 100%;
     display: block;
     background-size: cover;
-    background-position: center; /* ← ключевое: центрирует изображение */
+    background-position: center;
     background-repeat: no-repeat;
 }
 
-/* Левый флаг — чуть левее и выше (больше z-index) */
 .pair-flag:first-child {
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     left: 0;
-    z-index: 2; /* поверх правого */
+    z-index: 2;
 }
 
-/* Правый флаг — чуть правее и ниже */
 .pair-flag:last-child {
     background: linear-gradient(135deg, var(--danger), #ff9900);
-    left: 28px; /* примерно на половину ширины, чтобы перекрывался */
+    left: 28px;
     z-index: 1;
+}
+
+.pair-details {
+    margin-left: 60px;
+    flex: 1;
 }
 
 .pair-details h3 {
@@ -326,8 +319,8 @@ body {
 
 .accuracy-display {
     text-align: right;
-    flex-shrink: 0; /* Не сжимается */
-    min-width: 80px; /* Пример минимальной ширины для выравнивания */
+    flex-shrink: 0;
+    min-width: 80px;
 }
 
 .accuracy-label {
@@ -345,6 +338,7 @@ body {
     -webkit-text-fill-color: transparent;
     text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
 }
+
 /* Current Signal */
 .current-signal {
     background: rgba(255, 255, 255, 0.015);
@@ -397,7 +391,6 @@ body {
     box-shadow: 0 0 15px rgba(255, 85, 85, 0.2);
 }
 
-/* СТРЕЛКА ЦВЕТА СИГНАЛА */
 .arrow-buy {
     color: var(--success);
     text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
@@ -536,36 +529,16 @@ body {
     box-shadow: 0 6px 20px rgba(45, 140, 255, 0.3);
 }
 
-/* Добавь или замени существующий стиль для .btn-secondary */
 .btn-secondary {
-    /* Используем градиент как у основной кнопки, но более тусклый */
     background: linear-gradient(to right, rgba(45, 140, 255, 0.2), rgba(106, 91, 255, 0.2));
-    color: var(--text-primary); /* Цвет текста как у остального интерфейса */
-    border: 1px solid rgba(45, 140, 255, 0.3); /* Легкая граница */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Тень для объёмности */
+    color: var(--text-primary);
+    border: 1px solid rgba(45, 140, 255, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .btn-secondary:hover {
-    /* При наведении немного усиливаем градиент */
     background: linear-gradient(to right, rgba(45, 140, 255, 0.3), rgba(106, 91, 255, 0.3));
-    box-shadow: 0 6px 15px rgba(45, 140, 255, 0.2); /* Более заметная тень при наведении */
-}
-
-/* Добавь фон для основного контейнера приложения */
-.app-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: 16px;
-    max-width: 480px;
-    margin: 0 auto;
-    width: 100%;
-    position: relative;
-    /* --- НОВОЕ --- */
-    background: var(--bg); /* Используем основной цвет фона из темы */
-    border-radius: 16px; /* Слегка скругляем углы контейнера */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Добавляем тень для отделения от фона страницы */
-    /* --- /НОВОЕ --- */
+    box-shadow: 0 6px 15px rgba(45, 140, 255, 0.2);
 }
 
 .btn:hover {
@@ -710,9 +683,7 @@ body {
     border-radius: 18px;
     padding: 20px;
     border: 1px solid var(--card);
-    /* --- ОБНОВЛЕНО --- */
     box-shadow: var(--shadow-dark), var(--shadow-inset-dark);
-    /* --- /ОБНОВЛЕНО --- */
 }
 
 .stats-grid {
@@ -761,9 +732,7 @@ body {
     border-radius: 18px;
     padding: 20px;
     border: 1px solid var(--card);
-    /* --- ОБНОВЛЕНО --- */
     box-shadow: var(--shadow-dark), var(--shadow-inset-dark);
-    /* --- /ОБНОВЛЕНО --- */
 }
 
 .history-list {
@@ -851,12 +820,14 @@ body {
     margin-bottom: 16px;
     z-index: 8;
 }
+
 .selector-label {
     font-size: 12px;
     color: var(--muted);
     margin-bottom: 6px;
     font-weight: 500;
 }
+
 .selector-trigger {
     display: flex;
     justify-content: space-between;
@@ -868,10 +839,12 @@ body {
     cursor: pointer;
     transition: all 0.2s;
 }
+
 .selector-trigger:hover {
     border-color: var(--accent);
     box-shadow: 0 0 10px rgba(45, 140, 255, 0.3);
 }
+
 .selector-dropdown {
     position: absolute;
     top: 100%;
@@ -890,9 +863,11 @@ body {
     max-height: 200px;
     overflow-y: auto;
 }
+
 .selector-dropdown.active {
     display: flex;
 }
+
 .pair-option-dropdown,
 .timeframe-option {
     display: flex;
@@ -904,27 +879,27 @@ body {
     transition: background 0.2s;
     font-weight: 600;
 }
+
 .pair-option-dropdown:hover,
 .timeframe-option:hover {
     background: rgba(255, 255, 255, 0.05);
 }
+
 .pair-option-dropdown.active,
 .timeframe-option.active {
     background: rgba(45, 140, 255, 0.2);
     border: 1px solid rgba(45, 140, 255, 0.3);
 }
 
-/* Контейнер для двух селекторов */
 .selectors-wrapper {
     display: flex;
-    gap: 16px; /* Расстояние между селекторами */
-    margin-bottom: 20px; /* Отступ снизу, если нужно */
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
-/* Растягиваем селекторы по ширине */
 .selector-container {
-    flex: 1; /* Каждый селектор занимает равное пространство */
-    margin-bottom: 0; /* Убираем нижний отступ, так как он теперь внутри wrapper */
+    flex: 1;
+    margin-bottom: 0;
 }
 
 .loading-spinner {
@@ -965,6 +940,7 @@ body {
     z-index: 20;
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
+
 .menu-trigger i {
     color: var(--text-secondary);
     font-size: 18px;
@@ -987,6 +963,7 @@ body {
     flex-direction: column;
     box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
 }
+
 .side-menu.active {
     transform: translateX(0);
 }
@@ -997,9 +974,11 @@ body {
     align-items: center;
     margin-bottom: 32px;
 }
+
 .side-menu-header .brand-name {
     font-size: 20px;
 }
+
 .side-menu-close {
     background: none;
     border: none;
@@ -1014,6 +993,7 @@ body {
     gap: 16px;
     margin-top: 12px;
 }
+
 .side-menu-item {
     width: 100%;
     padding: 14px;
@@ -1027,6 +1007,7 @@ body {
     cursor: pointer;
     transition: all 0.2s;
 }
+
 .side-menu-item:hover {
     background: rgba(45, 140, 255, 0.15);
     border-color: var(--accent);
@@ -1044,6 +1025,7 @@ body {
     z-index: 1000;
     display: none;
 }
+
 .menu-overlay.active {
     display: block;
 }
@@ -1148,6 +1130,6 @@ body {
     font-size: 10px;
     font-weight: bold;
     color: white;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1); /* Тень для светлой темы */
-    flex-shrink: 0; /* Не сжимается */
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
 }
