@@ -48,6 +48,9 @@ const translations = {
             bestTimeframe: "Best Timeframe",
             switchToDarkTheme: "Switch to Dark Theme",
             switchToLightTheme: "Switch to Light Theme",
+            loadingTitle: "Analyzing Signal...",
+            loadingSubtitle:
+                "AI is scanning price patterns, volume data, and market indicators to generate the optimal signal.",
         },
         ru: {
             menu: "Меню",
@@ -90,6 +93,9 @@ const translations = {
             bestTimeframe: "Лучший таймфрейм",
             switchToDarkTheme: "Переключиться на тёмную тему",
             switchToLightTheme: "Переключиться на светлую тему",
+            loadingTitle: "Анализ сигнала...",
+            loadingSubtitle:
+                "ИИ сканирует ценовые паттерны, объёмы и рыночные индикаторы для генерации оптимального сигнала.",
         },
         hi: {
             menu: "मेनू",
@@ -131,6 +137,10 @@ const translations = {
             bestTimeframe: "सर्वश्रेष्ठ समय सीमा",
             switchToDarkTheme: "डार्क थीम पर स्विच करें",
             switchToLightTheme: "लाइट थीम पर स्विच करें",
+            // Внутри translations.texts.hi
+            loadingTitle: "संकेत का विश्लेषण किया जा रहा है...",
+            loadingSubtitle:
+                "AI कीमत पैटर्न, वॉल्यूम डेटा और बाजार संकेतकों को स्कैन कर रहा है ताकि इष्टतम संकेत उत्पन्न किया जा सके।",
         },
         ar: {
             menu: "القائمة",
@@ -169,6 +179,9 @@ const translations = {
             signalProgress: "تقدم الإشارة",
             switchToDarkTheme: "التبديل إلى السمة الداكنة",
             switchToLightTheme: "التبديل إلى السمة الفاتحة",
+            loadingTitle: "جارٍ تحليل الإشارة...",
+            loadingSubtitle:
+                "يقوم الذكاء الاصطناعي بمسح أنماط الأسعار وبيانات الحجم ومؤشرات السوق لتوليد الإشارة المثلى.",
         },
     },
 
