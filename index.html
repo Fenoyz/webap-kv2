@@ -21,6 +21,7 @@
         />
         <link rel="stylesheet" href="styles.css" />
     </head>
+
     <body>
         <!-- Loading Overlay -->
         <div class="loading-overlay" id="loadingOverlay">
@@ -72,31 +73,6 @@
                     <span class="brand-name">KV$M INTELLIGENCE</span>
                 </div>
                 <div class="time-display" id="currentTime">22:28</div>
-            </div>
-
-            <!-- Language Selector -->
-            <div class="language-selector-container">
-                <div class="language-trigger" id="languageTrigger">
-                    <div class="language-flag">
-                        <span class="fi fi-us"></span>
-                    </div>
-                    <span>EN</span>
-                    <i class="fas fa-chevron-down" style="font-size: 12px"></i>
-                </div>
-                <div class="language-dropdown" id="languageDropdown">
-                    <div class="language-option active" data-lang="en">
-                        <span class="fi fi-us"></span>
-                        <span>English</span>
-                    </div>
-                    <div class="language-option" data-lang="ru">
-                        <span class="fi fi-ru"></span>
-                        <span>Русский</span>
-                    </div>
-                    <div class="language-option" data-lang="es">
-                        <span class="fi fi-es"></span>
-                        <span>Español</span>
-                    </div>
-                </div>
             </div>
 
             <!-- Trading Type Selector -->
@@ -193,9 +169,11 @@
                                 </div>
                             </div>
                             <div class="meta-box">
-                                <div class="meta-label">Until</div>
-                                <div class="meta-value" id="metaUntil">
-                                    --:--
+                                <div class="meta-label" id="signalTypeLabel">
+                                    Signal Type
+                                </div>
+                                <div class="meta-value" id="signalTypeValue">
+                                    Basic
                                 </div>
                             </div>
                         </div>
@@ -401,7 +379,32 @@
                 </div>
             </div>
         </div>
-
+        <!-- Language Modal -->
+        <div class="modal-overlay" id="languageModalOverlay">
+            <div class="language-modal" id="languageModal">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Choose Language</h3>
+                    <button class="modal-close" id="modalClose">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button class="modal-lang-btn" data-lang="en">
+                        <span class="fi fi-us"></span> English
+                    </button>
+                    <button class="modal-lang-btn" data-lang="ru">
+                        <span class="fi fi-ru"></span> Русский
+                    </button>
+                    <button class="modal-lang-btn" data-lang="hi">
+                        <span class="fi fi-in"></span> हिंदी
+                    </button>
+                    <!-- НОВАЯ КНОПКА -->
+                    <button class="modal-lang-btn" data-lang="ar">
+                        <span class="fi fi-sa"></span> العربية
+                    </button>
+                </div>
+            </div>
+        </div>
         <script src="js/script.js"></script>
         <script src="js/translations.js"></script>
     </body>
