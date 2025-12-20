@@ -82,8 +82,8 @@ body {
 
 .app-header {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: space-between;
     padding: 12px 0;
     margin-bottom: 8px;
     position: relative;
@@ -202,6 +202,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.05);
     z-index: 10;
     position: relative;
+    gap: 8px; /* Отступ между кнопками */
 }
 
 .type-btn {
@@ -254,13 +255,14 @@ body {
 .pair-info {
     display: flex;
     align-items: center;
-    gap: 32px;
+    gap: 12px; /* Уменьшил расстояние между флагами и названием */
 }
 
 .pair-flags {
     display: flex;
     align-items: center;
     position: relative;
+    margin-left: -20px; /* Сдвигаем флаги влево */
 }
 
 .pair-flag {
@@ -300,7 +302,7 @@ body {
 }
 
 .pair-details {
-    margin-left: 60px;
+    margin-left: 80px; /* Уменьшил отступ слева для названия пары */
     flex: 1;
 }
 
@@ -530,14 +532,22 @@ body {
 }
 
 .btn-secondary {
-    background: linear-gradient(to right, rgba(45, 140, 255, 0.2), rgba(106, 91, 255, 0.2));
+    background: linear-gradient(
+        to right,
+        rgba(45, 140, 255, 0.2),
+        rgba(106, 91, 255, 0.2)
+    );
     color: var(--text-primary);
     border: 1px solid rgba(45, 140, 255, 0.3);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .btn-secondary:hover {
-    background: linear-gradient(to right, rgba(45, 140, 255, 0.3), rgba(106, 91, 255, 0.3));
+    background: linear-gradient(
+        to right,
+        rgba(45, 140, 255, 0.3),
+        rgba(106, 91, 255, 0.3)
+    );
     box-shadow: 0 6px 15px rgba(45, 140, 255, 0.2);
 }
 
@@ -671,10 +681,12 @@ body {
     display: none;
     flex: 1;
     overflow-y: auto;
+    padding-bottom: 16px; /* чтобы не прилипало к футеру */
 }
 
 .content-section.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Profile Section */
@@ -684,6 +696,10 @@ body {
     padding: 20px;
     border: 1px solid var(--card);
     box-shadow: var(--shadow-dark), var(--shadow-inset-dark);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* важно для корректного сжатия в flex-контейнере */
 }
 
 .stats-grid {
@@ -691,6 +707,7 @@ body {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     margin-bottom: 24px;
+    flex-shrink: 0; /* фиксируем высоту статистики, чтобы она не сжималась */
 }
 
 .stat-card {
@@ -726,22 +743,26 @@ body {
     color: var(--warning);
 }
 
-/* History Section */
 .history-section {
     background: var(--bg);
     border-radius: 18px;
     padding: 20px;
     border: 1px solid var(--card);
     box-shadow: var(--shadow-dark), var(--shadow-inset-dark);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* важно для корректного скролла внутри flex */
 }
 
 .history-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    max-height: 400px;
     overflow-y: auto;
     padding-right: 8px;
+    flex: 1; /* занимает всё оставшееся пространство */
+    min-height: 0; /* предотвращает переполнение */
 }
 
 .history-item {
@@ -924,11 +945,7 @@ body {
     cursor: not-allowed;
 }
 
-/* Hamburger Trigger */
 .menu-trigger {
-    position: absolute;
-    top: 16px;
-    left: 16px;
     width: 36px;
     height: 36px;
     display: flex;
@@ -937,9 +954,42 @@ body {
     background: var(--panel);
     border-radius: 10px;
     cursor: pointer;
-    z-index: 20;
     border: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 10;
+    transition: background 0.2s;
+    flex-shrink: 0;
 }
+
+.menu-trigger i {
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+.menu-trigger i {
+    color: var(--text-secondary);
+    font-size: 18px;
+    /* Убедимся, что иконка центрирована */
+    margin: 0;
+    padding: 0;
+}
+
+/* Адаптивность для малых экранов */
+@media (max-width: 480px) {
+    .menu-trigger {
+        width: 32px; /* Можно немного уменьшить на мобильных */
+        height: 32px;
+        top: calc(
+            12px + env(safe-area-inset-top, 0px)
+        ); /* Соответственно уменьшить отступ */
+        left: calc(12px + env(safe-area-inset-left, 0px));
+    }
+
+    .menu-trigger i {
+        font-size: 16px; /* Соответственно уменьшить размер иконки */
+    }
+}
+
+/* ... остальные стили ... */
 
 .menu-trigger i {
     color: var(--text-secondary);
@@ -1127,9 +1177,18 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
-    font-weight: bold;
-    color: white;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8), 1px 2px 6px rgba(0,0,0,0.2), 0 0 0 1px var(--panel);
+    overflow: hidden;
     flex-shrink: 0;
+    background: transparent; /* Убираем фон */
+}
+
+.pair-flag-history .fi {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: transparent; /* Убираем возможный текст */
 }
