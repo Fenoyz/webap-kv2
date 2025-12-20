@@ -1,6 +1,7 @@
-// App State
+// App State (в начале скрипта)
 const state = {
     currentLang: "en",
+    currentTheme: "dark", // <-- Добавляем состояние темы
     tradingType: "regular",
     selectedPair: "EURUSD",
     selectedTimeframe: "1M",
@@ -20,8 +21,6 @@ const state = {
 
 // DOM Elements
 const currentTimeEl = document.getElementById("currentTime");
-const languageTrigger = document.getElementById("languageTrigger");
-const languageDropdown = document.getElementById("languageDropdown");
 const languageOptions = document.querySelectorAll(".language-option");
 const typeButtons = document.querySelectorAll(".type-btn");
 const loadingOverlay = document.getElementById("loadingOverlay");
@@ -38,7 +37,6 @@ const accuracyValue = document.getElementById("accuracyValue");
 const directionArrow = document.getElementById("directionArrow");
 const directionText = document.getElementById("directionText");
 const metaTimeframe = document.getElementById("metaTimeframe");
-const metaUntil = document.getElementById("metaUntil");
 const progressFill = document.getElementById("progressFill");
 const progressPercent = document.getElementById("progressPercent");
 const timerDisplay = document.getElementById("timerDisplay");
@@ -101,18 +99,17 @@ function updateDisplay() {
     highlightSelectedPair();
     highlightSelectedTimeframe();
 }
-// Initialize App
 function init() {
     updateTime();
     setInterval(updateTime, 60000);
-    setupLanguageSelector();
     setupTradingTypeSelector();
-    setupPairSelector(); // ← add this
-    setupTimeframeSelector(); // ← add this
+    setupPairSelector();
+    setupTimeframeSelector();
     setupTabs();
     setupButtons();
     updateDisplay();
     updateProfileStats();
+
     // Fix времени
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, "0");
@@ -127,16 +124,25 @@ function init() {
     const menuChooseLanguage = document.getElementById("menuChooseLanguage");
     const menuChooseTheme = document.getElementById("menuChooseTheme");
 
+    // Modal elements
+    const languageModalOverlay = document.getElementById(
+        "languageModalOverlay",
+    );
+    const modalClose = document.getElementById("modalClose");
+    const modalLangButtons = document.querySelectorAll(".modal-lang-btn");
+    const modalTitle = document.getElementById("modalTitle");
+
     // Open/close menu
     function toggleMenu() {
         sideMenu.classList.toggle("active");
         menuOverlay.classList.toggle("active");
     }
 
-    // Обработчики пунктов бокового меню
+    // === ЕДИНСТВЕННЫЙ обработчик для выбора языка ===
     menuChooseLanguage.addEventListener("click", (e) => {
-        toggleMenu();
-        languageTrigger.click(); // имитируем клик по языковому триггеру
+        toggleMenu(); // закрываем боковое меню
+        languageModalOverlay.classList.add("active");
+        updateModalText();
     });
 
     menuChooseTheme.addEventListener("click", (e) => {
@@ -148,15 +154,39 @@ function init() {
     menuClose.addEventListener("click", toggleMenu);
     menuOverlay.addEventListener("click", toggleMenu);
 
-    // Вызываем при инициализации и при смене языка
+    // Закрытие модалки по крестику
+    modalClose.addEventListener("click", () => {
+        languageModalOverlay.classList.remove("active");
+    });
+
+    // Закрытие по клику вне окна
+    languageModalOverlay.addEventListener("click", (e) => {
+        if (e.target === languageModalOverlay) {
+            languageModalOverlay.classList.remove("active");
+        }
+    });
+
+    // Обработка выбора языка
+    modalLangButtons.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            const lang = btn.dataset.lang;
+            changeLanguage(lang);
+            languageModalOverlay.classList.remove("active");
+        });
+    });
+
+    // Обновление текстов
     updateMenuTexts();
 
-    // Пример: в changeLanguage после всех обновлений UI:
-    function changeLanguage(lang) {
-        // ... ваша существующая логика ...
-        updateUIText();
-        updateMenuTexts(); // ← добавить эту строку
+    // Функция обновления текста в модалке (локальная, но используется выше)
+    function updateModalText() {
+        const texts =
+            translations.texts[state.currentLang] || translations.texts.en;
+        modalTitle.textContent = texts.chooseLanguage || "Choose Language";
     }
+
+    // Убедитесь, что changeLanguage вызывает updateModalText!
+    // Но НЕ определяйте changeLanguage внутри init() — она уже есть глобально!
 }
 
 // Update current time
@@ -175,76 +205,24 @@ function updateMenuTexts() {
     menuChooseTheme.textContent = texts.chooseTheme;
 }
 
-// Setup language selector
-function setupLanguageSelector() {
-    languageTrigger.addEventListener("click", (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        languageDropdown.classList.toggle("active");
-        closeOtherDropdowns("language");
-    });
-
-    languageOptions.forEach((option) => {
-        option.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const lang = option.dataset.lang;
-            changeLanguage(lang);
-            languageDropdown.classList.remove("active");
-        });
-    });
-
-    // Close language dropdown when clicking outside
-    document.addEventListener("click", (e) => {
-        if (
-            !languageTrigger.contains(e.target) &&
-            !languageDropdown.contains(e.target)
-        ) {
-            languageDropdown.classList.remove("active");
-        }
-    });
-}
-
 // Change language
 function changeLanguage(lang) {
+    // Сохраняем выбранный язык
     state.currentLang = lang;
-    const langData = translations.languages[lang];
 
-    // Update trigger
-    const flagSpan = document.createElement("span");
-    flagSpan.className = `fi fi-${langData.flag}`;
-
-    languageTrigger.innerHTML = "";
-    languageTrigger.appendChild(document.createElement("div")).className =
-        "language-flag";
-    languageTrigger.querySelector(".language-flag").appendChild(flagSpan);
-
-    const textSpan = document.createElement("span");
-    textSpan.textContent = langData.triggerText;
-    languageTrigger.appendChild(textSpan);
-
-    const icon = document.createElement("i");
-    icon.className = "fas fa-chevron-down";
-    icon.style.fontSize = "12px";
-    languageTrigger.appendChild(icon);
-
-    // Update active option
-    languageOptions.forEach((option) => {
-        option.classList.remove("active");
-        if (option.dataset.lang === lang) {
-            option.classList.add("active");
-        }
-    });
-
-    // Update UI text based on language
+    // Обновляем весь UI
     updateUIText();
     updateMenuTexts();
+
+    // Закрываем модалку (если нужно — делается в вызывающем коде)
 }
 
 // Update UI text based on language
 function updateUIText() {
     const langTexts =
         translations.texts[state.currentLang] || translations.texts.en;
-
+    document.getElementById("signalTypeLabel").textContent =
+        langTexts.signalType || "Signal Type";
     // Update trading type buttons
     document.querySelector('[data-type="regular"]').textContent =
         langTexts.regular;
@@ -263,14 +241,12 @@ function updateUIText() {
     document.querySelector(".signal-title").textContent =
         langTexts.currentSignal;
 
-    // Update meta labels
-    const metaLabels = document.querySelectorAll(".meta-label");
-    if (metaLabels[0]) metaLabels[0].textContent = langTexts.timeframe;
-    if (metaLabels[1]) metaLabels[1].textContent = langTexts.until;
-
     // Update progress label
     const progressLabels = document.querySelectorAll(".progress-label");
-    if (progressLabels[0]) progressLabels[0].textContent = "Signal Progress";
+    if (progressLabels[0]) {
+        progressLabels[0].textContent =
+            langTexts.signalProgress || "Signal Progress";
+    }
 
     // Update buttons
     getSignalBtn.innerHTML = `<i class="fas fa-bolt"></i> ${langTexts.getSignal}`;
@@ -303,9 +279,9 @@ function updateUIText() {
 
     // Update direction text if waiting
     if (
-        directionText.textContent === "Waiting for signal..." ||
-        directionText.textContent === "Ожидание сигнала..." ||
-        directionText.textContent === "Esperando señal..."
+        ["waiting", "ожидание", "esperando", "प्रतीक्षा"].some((phrase) =>
+            directionText.textContent.toLowerCase().includes(phrase),
+        )
     ) {
         directionText.textContent = langTexts.waiting;
     } else if (
@@ -314,7 +290,9 @@ function updateUIText() {
         directionText.textContent === "ПОКУПКА" ||
         directionText.textContent === "ПРОДАЖА" ||
         directionText.textContent === "COMPRAR" ||
-        directionText.textContent === "VENDER"
+        directionText.textContent === "VENDER" ||
+        directionText.textContent === "खरीदें" ||
+        directionText.textContent === "बेचें"
     ) {
         // Update existing signal text if needed
         const isBuy = directionText.classList.contains("direction-buy");
@@ -426,9 +404,6 @@ function populateTimeframeDropdown() {
 
 // Close other dropdowns
 function closeOtherDropdowns(current) {
-    if (current !== "language") {
-        languageDropdown.classList.remove("active");
-    }
     if (current !== "pair") {
         pairDropdown.classList.remove("active");
     }
@@ -747,14 +722,7 @@ function updateProgress() {
     timerDisplay.textContent = `${formatTime(elapsed)} / ${formatTime(
         state.timerDuration,
     )}`;
-
-    // Обновляем "Until"
-    const untilTime = new Date(Date.now() + remaining * 1000);
-    const hours = untilTime.getHours().toString().padStart(2, "0");
-    const minutes = untilTime.getMinutes().toString().padStart(2, "0");
-    metaUntil.textContent = `${hours}:${minutes}`;
 }
-
 // Show loading animation
 function showLoading() {
     getSignalBtn.classList.add("btn-disabled"); // ← Добавлено
@@ -839,11 +807,6 @@ function generateSignalAfterLoading() {
     };
 
     const duration = timeframeSeconds[state.selectedTimeframe] || 5;
-
-    const untilTime = new Date(Date.now() + duration * 1000);
-    const hours = untilTime.getHours().toString().padStart(2, "0");
-    const minutes = untilTime.getMinutes().toString().padStart(2, "0");
-    metaUntil.textContent = `${hours}:${minutes}`;
 
     // Store signal
     state.currentSignal = {
@@ -1123,4 +1086,334 @@ function updateProfileStats() {
 }
 
 // Initialize the app
+document.addEventListener("DOMContentLoaded", init);
+
+// --- ВСТАВЬ ЭТИ ФУНКЦИИ В РАЗДЕЛ ФУНКЦИЙ В ТЕЛЕ SCRIPT ---
+
+// Toggle Theme Function
+function toggleTheme() {
+    // Переключаем тему в состоянии
+    state.currentTheme = state.currentTheme === "dark" ? "light" : "dark";
+    localStorage.setItem("selectedTheme", state.currentTheme); // Сохраняем выбор
+    applyTheme(state.currentTheme); // Применяем тему
+    updateUITheme(); // Обновляем элементы UI, связанные с темой
+    updateMenuTexts(); // Обновляем текст кнопки выбора темы в меню
+}
+
+// Apply Theme to CSS variables
+function applyTheme(themeName) {
+    const root = document.documentElement;
+
+    if (themeName === "light") {
+        root.style.setProperty("--bg", "#f0f4ff");
+        root.style.setProperty("--panel", "#ffffff");
+        root.style.setProperty("--card", "#ffffff");
+        root.style.setProperty("--muted", "#666666");
+        root.style.setProperty("--accent", "#2d8cff");
+        root.style.setProperty("--accent2", "#6a5bff");
+        root.style.setProperty("--success", "#00aa55"); // Более тусклый зелёный для светлой темы
+        root.style.setProperty("--danger", "#cc3333"); // Более тусклый красный для светлой темы
+        root.style.setProperty("--warning", "#ff9900");
+        root.style.setProperty("--glass", "rgba(255, 255, 255, 0.8)");
+        root.style.setProperty("--text-primary", "#1a1a1a");
+        root.style.setProperty("--text-secondary", "#4d4d4d");
+        root.style.setProperty("--regular-bg", "rgba(0, 170, 85, 0.15)"); // Соответствует success
+        root.style.setProperty("--regular-color", "#00aa55");
+        root.style.setProperty("--otc-bg", "rgba(45, 140, 255, 0.15)");
+        root.style.setProperty("--otc-color", "#2d8cff");
+        root.style.setProperty(
+            "--shadow-dark",
+            "0 8px 30px rgba(0, 0, 0, 0.1)",
+        ); // Светлая тень
+        root.style.setProperty(
+            "--shadow-inset-dark",
+            "inset 0 1px 0 rgba(0, 0, 0, 0.02)",
+        ); // Внутренняя тень для светлой темы
+        // Для светлой тени в светлой теме можно оставить так же или сделать ещё светлее
+        root.style.setProperty(
+            "--shadow-light",
+            "0 8px 30px rgba(0, 0, 0, 0.1)",
+        );
+    } else {
+        // dark
+        root.style.setProperty("--bg", "#050814");
+        root.style.setProperty("--panel", "#0b1630");
+        root.style.setProperty("--card", "#0d1b36");
+        root.style.setProperty("--muted", "#8a94b3");
+        root.style.setProperty("--accent", "#2d8cff");
+        root.style.setProperty("--accent2", "#6a5bff");
+        root.style.setProperty("--success", "#00ff88");
+        root.style.setProperty("--danger", "#ff5555");
+        root.style.setProperty("--warning", "#ffcc00");
+        root.style.setProperty("--glass", "rgba(255, 255, 255, 0.05)");
+        root.style.setProperty("--text-primary", "#ffffff");
+        root.style.setProperty("--text-secondary", "#b8c1e0");
+        root.style.setProperty("--regular-bg", "rgba(0, 255, 136, 0.15)");
+        root.style.setProperty("--regular-color", "#00ff88");
+        root.style.setProperty("--otc-bg", "rgba(45, 140, 255, 0.15)");
+        root.style.setProperty("--otc-color", "#2d8cff");
+        root.style.setProperty(
+            "--shadow-dark",
+            "0 8px 30px rgba(2, 6, 23, 0.7)",
+        ); // Тёмная тень
+        root.style.setProperty(
+            "--shadow-inset-dark",
+            "inset 0 1px 0 rgba(255, 255, 255, 0.02)",
+        ); // Внутренняя тень для тёмной темы
+        // Для светлой тени в тёмной теме
+        root.style.setProperty(
+            "--shadow-light",
+            "0 8px 30px rgba(255, 255, 255, 0.05)",
+        ); // Пример очень светлой тени
+    }
+
+    // Обновляем градиенты флагов на основе новой темы
+    updateSignalFlags(findCurrentPairObject());
+    // Если история сигнала отображается, обновим её тоже
+    updateHistoryDisplay();
+}
+
+// Find current pair object helper
+function findCurrentPairObject() {
+    const pairs =
+        state.tradingType === "otc"
+            ? translations.otcPairs
+            : translations.regularPairs;
+    return pairs.find((p) => p.code === state.selectedPair) || pairs[0];
+}
+
+// Update UI elements related to theme (like buttons, backgrounds if needed dynamically)
+function updateUITheme() {
+    // Нет необходимости обновлять конкретные элементы, так как всё основано на CSS переменных
+    // Но если потребуется, можно добавить сюда логику
+    console.log(`Theme updated to: ${state.currentTheme}`);
+}
+
+// --- ОБНОВИ ФУНКЦИЮ changeLanguage ---
+// Change language
+function changeLanguage(lang) {
+    // Сохраняем выбранный язык
+    state.currentLang = lang;
+    // Обновляем весь UI
+    updateUIText();
+    updateMenuTexts(); // Обновляем и текст в меню
+    // Закрываем модалку (если нужно — делается в вызывающем коде)
+}
+
+// --- ОБНОВИ ФУНКЦИЮ updateMenuTexts ---
+// Update menu item texts on language change
+function updateMenuTexts() {
+    const texts =
+        translations.texts[state.currentLang] || translations.texts.en;
+    menuChooseLanguage.textContent = texts.chooseLanguage;
+    // Обновляем текст кнопки выбора темы
+    const themeButtonText =
+        state.currentTheme === "dark"
+            ? texts.switchToLightTheme
+            : texts.switchToDarkTheme;
+    menuChooseTheme.textContent =
+        themeButtonText ||
+        (state.currentTheme === "dark"
+            ? "Switch to Light Theme"
+            : "Switch to Dark Theme");
+}
+
+// --- ОБНОВИ ФУНКЦИЮ init (добавь вызовы setupThemeToggle и applyTheme) ---
+// Initialize the app
+function init() {
+    // Загружаем сохранённую тему из localStorage или используем 'dark' по умолчанию
+    const savedTheme = localStorage.getItem("selectedTheme") || "dark";
+    state.currentTheme = savedTheme;
+    applyTheme(state.currentTheme);
+
+    updateTime();
+    setInterval(updateTime, 60000);
+    setupTradingTypeSelector();
+    setupPairSelector();
+    setupTimeframeSelector();
+    setupTabs();
+    setupButtons();
+    setupThemeToggle(); // <-- Добавляем вызов новой функции
+    updateDisplay();
+    updateProfileStats();
+
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    currentTimeEl.textContent = `${hours}:${minutes}`;
+
+    // Menu DOM Elements
+    const menuTrigger = document.getElementById("menuTrigger");
+    const menuClose = document.getElementById("menuClose");
+    const sideMenu = document.getElementById("sideMenu");
+    const menuOverlay = document.getElementById("menuOverlay");
+    const menuChooseLanguage = document.getElementById("menuChooseLanguage");
+    const menuChooseTheme = document.getElementById("menuChooseTheme"); // Убедись, что элемент существует в HTML
+
+    // Modal elements
+    const languageModalOverlay = document.getElementById(
+        "languageModalOverlay",
+    );
+    const modalClose = document.getElementById("modalClose");
+    const modalLangButtons = document.querySelectorAll(".modal-lang-btn");
+    const modalTitle = document.getElementById("modalTitle");
+
+    // Open/close menu
+    function toggleMenu() {
+        sideMenu.classList.toggle("active");
+        menuOverlay.classList.toggle("active");
+    }
+
+    menuChooseLanguage.addEventListener("click", (e) => {
+        toggleMenu(); // закрываем боковое меню
+        languageModalOverlay.classList.add("active");
+        updateModalText();
+    });
+
+    // Заменяем alert на вызов toggleTheme
+    menuChooseTheme.addEventListener("click", (e) => {
+        toggleMenu(); // закрываем боковое меню после выбора
+        toggleTheme(); // переключаем тему
+    });
+
+    menuTrigger.addEventListener("click", toggleMenu);
+    menuClose.addEventListener("click", toggleMenu);
+    menuOverlay.addEventListener("click", toggleMenu);
+
+    modalClose.addEventListener("click", () => {
+        languageModalOverlay.classList.remove("active");
+    });
+
+    languageModalOverlay.addEventListener("click", (e) => {
+        if (e.target === languageModalOverlay) {
+            languageModalOverlay.classList.remove("active");
+        }
+    });
+
+    modalLangButtons.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            const lang = btn.dataset.lang;
+            changeLanguage(lang);
+            languageModalOverlay.classList.remove("active");
+        });
+    });
+
+    updateMenuTexts();
+
+    function updateModalText() {
+        const texts =
+            translations.texts[state.currentLang] || translations.texts.en;
+        modalTitle.textContent = texts.chooseLanguage || "Choose Language";
+    }
+}
+
+// --- НОВАЯ ФУНКЦИЯ ДЛЯ НАСТРОЙКИ ПЕРЕКЛЮЧЕНИЯ ТЕМЫ ---
+function setupThemeToggle() {
+    // Если у тебя есть кнопка в основном меню для переключения темы (не в боковом)
+    // const mainMenuThemeBtn = document.getElementById('mainMenuThemeButton'); // Пример
+    // if(mainMenuThemeBtn) {
+    //     mainMenuThemeBtn.addEventListener('click', toggleTheme);
+    // }
+    // В данном случае переключение происходит через боковое меню, функция toggleTheme уже привязана к menuChooseTheme
+    console.log("Theme toggle initialized.");
+}
+
+// --- ОБНОВИ ФУНКЦИЮ updateSignalFlags, ЧТОБЫ ОНА ИСПОЛЬЗОВАЛА ТЕКУЩИЕ ПЕРЕМЕННЫЕ CSS ---
+// Update signal flags
+function updateSignalFlags(pair) {
+    signalFlags.innerHTML = "";
+    const pairName = pair.name.replace(" OTC", "");
+    const currencies = pairName.split("/");
+    const baseCurrency = currencies[0]?.trim();
+    const quoteCurrency = currencies[1]?.trim();
+    const baseFlagCode = currencyToFlagMap[baseCurrency] || "xx";
+    const quoteFlagCode = currencyToFlagMap[quoteCurrency] || "xx";
+
+    const baseFlagDiv = document.createElement("div");
+    baseFlagDiv.className = "pair-flag";
+    // Используем переменные CSS для градиента, они обновятся при смене темы
+    baseFlagDiv.style.backgroundImage =
+        "linear-gradient(135deg, var(--accent), var(--accent2))";
+    baseFlagDiv.style.display = "flex";
+    baseFlagDiv.style.alignItems = "center";
+    baseFlagDiv.style.justifyContent = "center";
+    baseFlagDiv.style.overflow = "hidden";
+    const baseFlagIcon = document.createElement("span");
+    baseFlagIcon.className = `fi fi-${baseFlagCode}`;
+    baseFlagIcon.style.fontSize = "28px";
+    baseFlagIcon.style.color = "white";
+    baseFlagDiv.appendChild(baseFlagIcon);
+    signalFlags.appendChild(baseFlagDiv);
+
+    const quoteFlagDiv = document.createElement("div");
+    quoteFlagDiv.className = "pair-flag";
+    // Используем переменные CSS для градиента, они обновятся при смене темы
+    quoteFlagDiv.style.backgroundImage =
+        "linear-gradient(135deg, var(--danger), #ff9900)";
+    quoteFlagDiv.style.display = "flex";
+    quoteFlagDiv.style.alignItems = "center";
+    quoteFlagDiv.style.justifyContent = "center";
+    quoteFlagDiv.style.overflow = "hidden";
+    const quoteFlagIcon = document.createElement("span");
+    quoteFlagIcon.className = `fi fi-${quoteFlagCode}`;
+    quoteFlagIcon.style.fontSize = "28px";
+    quoteFlagIcon.style.color = "white";
+    quoteFlagDiv.appendChild(quoteFlagIcon);
+    signalFlags.appendChild(quoteFlagDiv);
+}
+
+// --- ОБНОВИ ФУНКЦИЮ updateHistoryDisplay, ЧТОБЫ ФЛАГИ В ИСТОРИИ ТОЖЕ МЕНЯЛИ ТЕМУ ---
+// Update history display
+function updateHistoryDisplay() {
+    historyList.innerHTML = "";
+    if (state.signalHistory.length === 0) {
+        const emptyItem = document.createElement("div");
+        emptyItem.className = "history-item";
+        emptyItem.style.opacity = "0.7";
+        emptyItem.style.fontStyle = "italic";
+        emptyItem.style.justifyContent = "center";
+        emptyItem.textContent = "No signals yet";
+        historyList.appendChild(emptyItem);
+        return;
+    }
+    state.signalHistory.slice(0, 20).forEach((signal) => {
+        const item = document.createElement("div");
+        item.className = "history-item";
+        const timeStr = signal.startTime.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+        const dateStr = signal.startTime.toLocaleDateString([], {
+            month: "short",
+            day: "numeric",
+        });
+        // Обновляем отображение флага в истории (упрощённо, можно улучшить)
+        // Используем span с классом, который будет стилизоваться через CSS
+        const pairBaseCurrency = signal.pair.substring(0, 3).slice(0, 2); // "EU" из "EUR"
+        const pairQuoteCurrency = signal.pair.substring(3, 6).slice(0, 2); // "US" из "USD"
+
+        item.innerHTML = `
+      <div class="history-pair">
+        <div class="pair-flag-history" style="background-image: linear-gradient(135deg, var(--accent), var(--accent2));"> ${pairBaseCurrency} </div>
+        <div class="pair-flag-history" style="background-image: linear-gradient(135deg, var(--danger), #ff9900); margin-left: 4px;"> ${pairQuoteCurrency} </div>
+        <div class="history-details">
+          <div class="history-pair-name">${signal.pairName}</div>
+          <div class="history-time">${dateStr} • ${timeStr} • ${
+            signal.timeframe
+        }</div>
+        </div>
+      </div>
+      <div class="history-result ${
+          signal.result === "win" ? "history-win" : "history-loss"
+      }">
+        ${signal.resultSimple}
+      </div>
+    `;
+        historyList.appendChild(item);
+    });
+}
+
+// --- ОБНОВИ state ---
+
+// --- ПОСЛЕ ВСЕГО КОДА, В КОНЦЕ SCRIPT ---
 document.addEventListener("DOMContentLoaded", init);
