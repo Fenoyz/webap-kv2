@@ -308,6 +308,7 @@ const translations = {
 
     // Currency pairs data
     regularPairs: [
+        // Major pairs (EUR/USD, GBP/USD, USD/JPY, etc.)
         {
             code: "EURUSD",
             name: "EUR/USD",
@@ -337,18 +338,18 @@ const translations = {
             flagCodes: ["au", "us"],
         },
         {
+            code: "NZDUSD",
+            name: "NZD/USD",
+            flag: "NZ",
+            countries: ["nz", "us"],
+            flagCodes: ["nz", "us"],
+        },
+        {
             code: "USDCAD",
             name: "USD/CAD",
             flag: "CA",
             countries: ["us", "ca"],
             flagCodes: ["us", "ca"],
-        },
-        {
-            code: "EURGBP",
-            name: "EUR/GBP",
-            flag: "EG",
-            countries: ["eu", "gb"],
-            flagCodes: ["eu", "gb"],
         },
         {
             code: "USDCHF",
@@ -357,12 +358,35 @@ const translations = {
             countries: ["us", "ch"],
             flagCodes: ["us", "ch"],
         },
+
+        // Cross pairs (EUR crosses)
         {
-            code: "NZDUSD",
-            name: "NZD/USD",
-            flag: "NZ",
-            countries: ["nz", "us"],
-            flagCodes: ["nz", "us"],
+            code: "EURGBP",
+            name: "EUR/GBP",
+            flag: "EG",
+            countries: ["eu", "gb"],
+            flagCodes: ["eu", "gb"],
+        },
+        {
+            code: "EURAUD",
+            name: "EUR/AUD",
+            flag: "EA",
+            countries: ["eu", "au"],
+            flagCodes: ["eu", "au"],
+        },
+        {
+            code: "EURCAD",
+            name: "EUR/CAD",
+            flag: "EC",
+            countries: ["eu", "ca"],
+            flagCodes: ["eu", "ca"],
+        },
+        {
+            code: "EURCHF",
+            name: "EUR/CHF",
+            flag: "EC",
+            countries: ["eu", "ch"],
+            flagCodes: ["eu", "ch"],
         },
         {
             code: "EURJPY",
@@ -371,6 +395,8 @@ const translations = {
             countries: ["eu", "jp"],
             flagCodes: ["eu", "jp"],
         },
+
+        // Cross pairs (GBP crosses)
         {
             code: "GBPJPY",
             name: "GBP/JPY",
@@ -378,6 +404,29 @@ const translations = {
             countries: ["gb", "jp"],
             flagCodes: ["gb", "jp"],
         },
+        {
+            code: "GBPAUD",
+            name: "GBP/AUD",
+            flag: "GA",
+            countries: ["gb", "au"],
+            flagCodes: ["gb", "au"],
+        },
+        {
+            code: "GBPCAD",
+            name: "GBP/CAD",
+            flag: "GC",
+            countries: ["gb", "ca"],
+            flagCodes: ["gb", "ca"],
+        },
+        {
+            code: "GBPCHF",
+            name: "GBP/CHF",
+            flag: "GC",
+            countries: ["gb", "ch"],
+            flagCodes: ["gb", "ch"],
+        },
+
+        // JPY crosses
         {
             code: "AUDJPY",
             name: "AUD/JPY",
@@ -392,9 +441,40 @@ const translations = {
             countries: ["ca", "jp"],
             flagCodes: ["ca", "jp"],
         },
+        {
+            code: "CHFJPY",
+            name: "CHF/JPY",
+            flag: "CJ",
+            countries: ["ch", "jp"],
+            flagCodes: ["ch", "jp"],
+        },
+
+        // Other cross pairs
+        {
+            code: "AUDCAD",
+            name: "AUD/CAD",
+            flag: "AC",
+            countries: ["au", "ca"],
+            flagCodes: ["au", "ca"],
+        },
+        {
+            code: "AUDCHF",
+            name: "AUD/CHF",
+            flag: "AC",
+            countries: ["au", "ch"],
+            flagCodes: ["au", "ch"],
+        },
+        {
+            code: "CADCHF",
+            name: "CAD/CHF",
+            flag: "CC",
+            countries: ["ca", "ch"],
+            flagCodes: ["ca", "ch"],
+        },
     ],
 
     otcPairs: [
+        // Major pairs (EUR/USD, GBP/USD, USD/JPY, etc.)
         {
             code: "EURUSD",
             name: "EUR/USD OTC",
@@ -424,18 +504,18 @@ const translations = {
             flagCodes: ["au", "us"],
         },
         {
+            code: "NZDUSD",
+            name: "NZD/USD OTC",
+            flag: "NZ",
+            countries: ["nz", "us"],
+            flagCodes: ["nz", "us"],
+        },
+        {
             code: "USDCAD",
             name: "USD/CAD OTC",
             flag: "CA",
             countries: ["us", "ca"],
             flagCodes: ["us", "ca"],
-        },
-        {
-            code: "EURGBP",
-            name: "EUR/GBP OTC",
-            flag: "EG",
-            countries: ["eu", "gb"],
-            flagCodes: ["eu", "gb"],
         },
         {
             code: "USDCHF",
@@ -444,12 +524,35 @@ const translations = {
             countries: ["us", "ch"],
             flagCodes: ["us", "ch"],
         },
+
+        // Cross pairs (EUR crosses)
         {
-            code: "NZDUSD",
-            name: "NZD/USD OTC",
-            flag: "NZ",
-            countries: ["nz", "us"],
-            flagCodes: ["nz", "us"],
+            code: "EURGBP",
+            name: "EUR/GBP OTC",
+            flag: "EG",
+            countries: ["eu", "gb"],
+            flagCodes: ["eu", "gb"],
+        },
+        {
+            code: "EURAUD",
+            name: "EUR/AUD OTC",
+            flag: "EA",
+            countries: ["eu", "au"],
+            flagCodes: ["eu", "au"],
+        },
+        {
+            code: "EURCAD",
+            name: "EUR/CAD OTC",
+            flag: "EC",
+            countries: ["eu", "ca"],
+            flagCodes: ["eu", "ca"],
+        },
+        {
+            code: "EURCHF",
+            name: "EUR/CHF OTC",
+            flag: "EC",
+            countries: ["eu", "ch"],
+            flagCodes: ["eu", "ch"],
         },
         {
             code: "EURJPY",
@@ -458,6 +561,8 @@ const translations = {
             countries: ["eu", "jp"],
             flagCodes: ["eu", "jp"],
         },
+
+        // Cross pairs (GBP crosses)
         {
             code: "GBPJPY",
             name: "GBP/JPY OTC",
@@ -465,6 +570,29 @@ const translations = {
             countries: ["gb", "jp"],
             flagCodes: ["gb", "jp"],
         },
+        {
+            code: "GBPAUD",
+            name: "GBP/AUD OTC",
+            flag: "GA",
+            countries: ["gb", "au"],
+            flagCodes: ["gb", "au"],
+        },
+        {
+            code: "GBPCAD",
+            name: "GBP/CAD OTC",
+            flag: "GC",
+            countries: ["gb", "ca"],
+            flagCodes: ["gb", "ca"],
+        },
+        {
+            code: "GBPCHF",
+            name: "GBP/CHF OTC",
+            flag: "GC",
+            countries: ["gb", "ch"],
+            flagCodes: ["gb", "ch"],
+        },
+
+        // JPY crosses
         {
             code: "AUDJPY",
             name: "AUD/JPY OTC",
@@ -478,6 +606,115 @@ const translations = {
             flag: "CJ",
             countries: ["ca", "jp"],
             flagCodes: ["ca", "jp"],
+        },
+        {
+            code: "CHFJPY",
+            name: "CHF/JPY OTC",
+            flag: "CJ",
+            countries: ["ch", "jp"],
+            flagCodes: ["ch", "jp"],
+        },
+
+        // Other cross pairs
+        {
+            code: "AUDCAD",
+            name: "AUD/CAD OTC",
+            flag: "AC",
+            countries: ["au", "ca"],
+            flagCodes: ["au", "ca"],
+        },
+        {
+            code: "AUDCHF",
+            name: "AUD/CHF OTC",
+            flag: "AC",
+            countries: ["au", "ch"],
+            flagCodes: ["au", "ch"],
+        },
+        {
+            code: "AUDNZD",
+            name: "AUD/NZD OTC",
+            flag: "AN",
+            countries: ["au", "nz"],
+            flagCodes: ["au", "nz"],
+        },
+        {
+            code: "CADCHF",
+            name: "CAD/CHF OTC",
+            flag: "CC",
+            countries: ["ca", "ch"],
+            flagCodes: ["ca", "ch"],
+        },
+        {
+            code: "NZDJPY",
+            name: "NZD/JPY OTC",
+            flag: "NJ",
+            countries: ["nz", "jp"],
+            flagCodes: ["nz", "jp"],
+        },
+
+        // Exotic & Emerging market pairs (grouped by region/base currency)
+        {
+            code: "AEDCNY",
+            name: "AED/CNY OTC",
+            flag: "AC",
+            countries: ["ae", "cn"],
+            flagCodes: ["ae", "cn"],
+        },
+        {
+            code: "JODCNY",
+            name: "JOD/CNY OTC",
+            flag: "JC",
+            countries: ["jo", "cn"],
+            flagCodes: ["jo", "cn"],
+        },
+        {
+            code: "SARCNY",
+            name: "SAR/CNY OTC",
+            flag: "SC",
+            countries: ["sa", "cn"],
+            flagCodes: ["sa", "cn"],
+        },
+        {
+            code: "USDMXN",
+            name: "USD/MXN OTC",
+            flag: "UM",
+            countries: ["us", "mx"],
+            flagCodes: ["us", "mx"],
+        },
+        {
+            code: "USDRUB",
+            name: "USD/RUB OTC",
+            flag: "UR",
+            countries: ["us", "ru"],
+            flagCodes: ["us", "ru"],
+        },
+        {
+            code: "USDPKR",
+            name: "USD/PKR OTC",
+            flag: "UP",
+            countries: ["us", "pk"],
+            flagCodes: ["us", "pk"],
+        },
+        {
+            code: "LBPUSD",
+            name: "LBP/USD OTC",
+            flag: "LU",
+            countries: ["lb", "us"],
+            flagCodes: ["lb", "us"],
+        },
+        {
+            code: "YERUSD",
+            name: "YER/USD OTC",
+            flag: "YU",
+            countries: ["ye", "us"],
+            flagCodes: ["ye", "us"],
+        },
+        {
+            code: "ZARUSD",
+            name: "ZAR/USD OTC",
+            flag: "ZU",
+            countries: ["za", "us"],
+            flagCodes: ["za", "us"],
         },
     ],
 
