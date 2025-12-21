@@ -173,12 +173,13 @@ body {
     display: flex;
 }
 
+/* Выпадающий список языков (в шапке) */
 .language-option {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 10px;
-    border-radius: 8px;
+    border-radius: 16px; /* ← увеличено с 8px до 16px */
     cursor: pointer;
     transition: background 0.2s;
 }
@@ -1177,7 +1178,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8), 1px 2px 6px rgba(0,0,0,0.2), 0 0 0 1px var(--panel);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8),
+        1px 2px 6px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--panel);
     overflow: hidden;
     flex-shrink: 0;
     background: transparent; /* Убираем фон */
@@ -1191,4 +1193,53 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     color: transparent; /* Убираем возможный текст */
+}
+
+/* Добавляем к контейнеру модального окна */
+.language-modal .modal-body {
+    display: flex;
+    flex-direction: row; /* Располагаем колонки рядом */
+    justify-content: center; /* Центрируем колонки по горизонтали */
+    gap: 12px; /* Расстояние между колонками */
+    padding: 16px 8px; /* Немного увеличиваем отступы внутри */
+    max-height: 300px; /* Ограничим высоту для скролла при необходимости */
+    overflow-y: auto; /* Добавим скролл, если элементов много */
+}
+
+/* Стили для каждой колонки */
+.language-modal .lang-column {
+    display: flex;
+    flex-direction: column; /* Располагаем языки вертикально в колонке */
+    gap: 8px; /* Расстояние между кнопками языков в колонке */
+    flex: 1; /* Обе колонки занимают равное место */
+    max-width: 200px; /* Максимальная ширина колонки */
+}
+
+
+/* Модальное окно выбора языка */
+.language-modal .modal-lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--panel);
+    color: var(--text-primary);
+    border-radius: 16px; /* ← тоже увеличено до 16px */
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    font-size: 16px;
+    text-align: left;
+}
+
+.language-modal .modal-lang-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent);
+}
+
+.language-modal .modal-lang-btn .fi {
+    width: 24px;
+    height: 24px;
+    font-size: 24px; /* Убедимся, что флаг имеет нужный размер */
+    line-height: 1; /* Корректировка выравнивания */
 }
