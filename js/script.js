@@ -34,6 +34,16 @@ const CONFIG = {
         CAD: "ca",
         CHF: "ch",
         NZD: "nz",
+        CNY: "cn", // Chinese Yuan
+        RUB: "ru", // Russian Ruble
+        PKR: "pk", // Pakistani Rupee
+        MXN: "mx", // Mexican Peso
+        ZAR: "za", // South African Rand
+        AED: "ae", // UAE Dirham
+        JOD: "jo", // Jordanian Dinar
+        SAR: "sa", // Saudi Riyal
+        LBP: "lb", // Lebanese Pound
+        YER: "ye", // Yemeni Rial
     },
     DATE_FORMAT_OPTIONS: {
         month: "2-digit",
@@ -613,13 +623,17 @@ function updateUIText() {
         performanceLabel.textContent = langTexts.performanceMetrics;
     const directionTextEl = getElement(SELECTORS.DIRECTION_TEXT);
     if (directionTextEl) {
-        if (
-            ["waiting", "ожидание", "esperando", "प्रतीक्षा"].some((phrase) =>
-                directionTextEl.textContent.toLowerCase().includes(phrase),
-            )
-        ) {
-            directionTextEl.textContent = langTexts.waiting;
+        // Получаем все возможные переводы "Waiting for signal..."
+        const waitingTranslations = Object.values(translations.texts).map(
+            (t) => t.waiting,
+        );
+        // Проверяем, строго ли текущий текст совпадает с одним из них
+        if (waitingTranslations.includes(directionTextEl.textContent.trim())) {
+            // Если да, принудительно обновляем его значением для текущего языка
+            directionTextEl.textContent =
+                langTexts.waiting || "Waiting for signal...";
         } else if (
+            // Старая проверка для BUY/SELL
             directionTextEl.textContent === "BUY" ||
             directionTextEl.textContent === "SELL" ||
             directionTextEl.textContent === "ПОКУПКА" ||
