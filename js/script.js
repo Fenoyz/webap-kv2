@@ -1105,7 +1105,10 @@ function startTimer(duration) {
 
 function completeSignal() {
     if (!state.currentSignal) return;
-    const isWin = Math.random() > 0.5;
+    const minWinRate = 0.70;
+    const maxWinRate = 0.75;
+    const randomWinRate = minWinRate + Math.random() * (maxWinRate - minWinRate);
+    const isWin = Math.random() < randomWinRate;
     const result = isWin ? "win" : "loss";
     const resultSimple = isWin
         ? translations.btnTexts[state.currentLang]?.win || "Win"
