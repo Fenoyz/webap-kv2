@@ -1063,7 +1063,7 @@ function generateSignalAfterLoading() {
         directionText.className =
             "direction-text " + (isBuy ? "direction-buy" : "direction-sell");
     }
-    const duration = CONFIG.TIMEFRAME_SECONDS[state.selectedTimeframe] || 5;
+    const duration = getTimeframeDuration(state.selectedTimeframe);
     state.currentSignal = {
         pair: state.selectedPair,
         pairName: pair.name,
@@ -1321,3 +1321,35 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
+/**
+ * Преобразует код таймфрейма (например, "M1", "S15", "H4") в длительность в секундах.
+ * Поддерживаемые префиксы:
+ * - S = секунды
+ * - M = минуты
+ * - H = часы
+ * Примеры: "S5" → 5, "M1" → 60, "H1" → 3600
+ * @param {string} code - код таймфрейма (например, "M5")
+ * @returns {number} - длительность в секундах, по умолчанию 5
+ */
+function getTimeframeDuration(code) {
+  if (typeof code !== "string") return 5;
+
+  const match = code.match(/^([SMH])(\d+)$/i);
+  if (!match) return 5;
+
+  const [, unit, valueStr] = match;
+  const value = parseInt(valueStr, 10);
+  if (isNaN(value) || value <= 0) return 5;
+
+  switch (unit.toUpperCase()) {
+    case "S":
+      return value; // секунды
+    case "M":
+      return value * 60; // минуты → секунды
+    case "H":
+      return value * 3600; // часы → секунды
+    default:
+      return 5;
+  }
+}
