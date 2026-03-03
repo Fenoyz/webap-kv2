@@ -7,18 +7,18 @@ const CONFIG = {
     MAX_HISTORY_ITEMS: 20,
     MAX_HISTORY_STORAGE_ITEMS: 100,
     TIMEFRAME_SECONDS: {
-        "S1": 1,
-        "S5": 5,
-        "S15": 15,
-        "S30": 30,
-        "M1": 60,
-        "M3": 180,
-        "M5": 300,
-        "M15": 900,
-        "M30": 1800,
-        "H1": 3600,
-        "H3": 10800,
-        "H4": 14400,
+        S1: 1,
+        S5: 5,
+        S15: 15,
+        S30: 30,
+        M1: 60,
+        M3: 180,
+        M5: 300,
+        M15: 900,
+        M30: 1800,
+        H1: 3600,
+        H3: 10800,
+        H4: 14400,
     },
     LOADING_INCREMENT_MIN: 5,
     LOADING_INCREMENT_MAX: 15,
@@ -1113,9 +1113,10 @@ function startTimer(duration) {
 
 function completeSignal() {
     if (!state.currentSignal) return;
-    const minWinRate = 0.70;
+    const minWinRate = 0.7;
     const maxWinRate = 0.75;
-    const randomWinRate = minWinRate + Math.random() * (maxWinRate - minWinRate);
+    const randomWinRate =
+        minWinRate + Math.random() * (maxWinRate - minWinRate);
     const isWin = Math.random() < randomWinRate;
     const result = isWin ? "win" : "loss";
     const resultSimple = isWin
@@ -1145,9 +1146,8 @@ function completeSignal() {
     }
     state.stats.timeframePerformance[state.selectedTimeframe].total += 1;
     if (isWin) {
-        state.stats.timeframePerformance[
-            state.selectedTimeframe
-        ].successful += 1;
+        state.stats.timeframePerformance[state.selectedTimeframe].successful +=
+            1;
     }
     state.signalHistory.unshift({
         pair: state.selectedPair,
@@ -1341,23 +1341,23 @@ document.addEventListener("DOMContentLoaded", init);
  * @returns {number} - длительность в секундах, по умолчанию 5
  */
 function getTimeframeDuration(code) {
-  if (typeof code !== "string") return 5;
+    if (typeof code !== "string") return 5;
 
-  const match = code.match(/^([SMH])(\d+)$/i);
-  if (!match) return 5;
+    const match = code.match(/^([SMH])(\d+)$/i);
+    if (!match) return 5;
 
-  const [, unit, valueStr] = match;
-  const value = parseInt(valueStr, 10);
-  if (isNaN(value) || value <= 0) return 5;
+    const [, unit, valueStr] = match;
+    const value = parseInt(valueStr, 10);
+    if (isNaN(value) || value <= 0) return 5;
 
-  switch (unit.toUpperCase()) {
-    case "S":
-      return value; // секунды
-    case "M":
-      return value * 60; // минуты → секунды
-    case "H":
-      return value * 3600; // часы → секунды
-    default:
-      return 5;
-  }
+    switch (unit.toUpperCase()) {
+        case "S":
+            return value; // секунды
+        case "M":
+            return value * 60; // минуты → секунды
+        case "H":
+            return value * 3600; // часы → секунды
+        default:
+            return 5;
+    }
 }
